@@ -24,7 +24,7 @@
             <span><i class="fas fa-globe-africa text-green-400 mr-2"></i> 54 Pays - Marché Connecté</span>
             <div class="flex items-center gap-4">
                 <span id="user-display" class="text-green-400 hidden">Connecté</span>
-                <span id="connection-status">Connexion...</span>
+                <span id="connection-status">Connexion en cours...</span>
             </div>
         </div>
     </div>
@@ -38,7 +38,6 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <!-- Bouton Connexion pour les inscrits -->
                 <button id="btn-login-trigger" onclick="toggleModal('modal-auth')" class="text-slate-600 font-bold text-sm px-4 py-2 hover:bg-slate-100 rounded-xl transition">
                     Se connecter
                 </button>
@@ -69,8 +68,7 @@
     <!-- Contenu Principal -->
     <main class="container mx-auto px-4 py-20">
         <div id="ads-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Loading shimmer -->
-            <div class="rounded-[2.5rem] p-4 bg-white border border-slate-100">
+            <div class="rounded-[2.5rem] p-4 bg-white border border-slate-100 skeleton-loader">
                 <div class="h-56 rounded-[2rem] loading-shimmer mb-4"></div>
                 <div class="h-4 w-2/3 loading-shimmer mb-2"></div>
                 <div class="h-6 w-1/2 loading-shimmer"></div>
@@ -82,7 +80,7 @@
         </div>
     </main>
 
-    <!-- Modal de Connexion (Pour les anciens utilisateurs) -->
+    <!-- Modal de Connexion -->
     <div id="modal-auth" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[120] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-[2.5rem] w-full max-w-md overflow-hidden shadow-2xl">
             <div class="p-8 border-b bg-slate-50 flex justify-between items-center">
@@ -93,7 +91,6 @@
                 <input type="email" id="login-email" placeholder="Email" class="w-full p-4 bg-slate-50 border-none rounded-xl outline-none ring-1 ring-slate-200 focus:ring-green-500 font-bold">
                 <input type="password" id="login-password" placeholder="Mot de passe" class="w-full p-4 bg-slate-50 border-none rounded-xl outline-none ring-1 ring-slate-200 focus:ring-green-500 font-bold">
                 <button onclick="handleLogin()" id="btn-login-submit" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:bg-slate-800">Se connecter</button>
-                <p class="text-center text-xs text-slate-400">Pas encore de compte ? Publiez directement, le système créera un accès invité.</p>
             </div>
         </div>
     </div>
@@ -134,19 +131,33 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithEmailAndPassword, signOut, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // Initialisation sécurisée
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kongo-market-demo';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kongo-market-app';
 
         let currentImageBase64 = "";
         let isUserAnonymous = true;
 
-        // AUTH INITIALISATION
+        // AUTHENTIFICATION
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    // Si pas de session active, on tente l'anonyme seulement si nécessaire
+                    if (!auth.currentUser) await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth Init Error:", err);
+            }
+        };
+
         onAuthStateChanged(auth, (user) => {
             const statusEl = document.getElementById('connection-status');
             const loginBtn = document.getElementById('btn-login-trigger');
@@ -155,7 +166,7 @@
 
             if (user) {
                 isUserAnonymous = user.isAnonymous;
-                statusEl.textContent = isUserAnonymous ? "Accès Invité" : "Membre Connecté";
+                statusEl.textContent = isUserAnonymous ? "Accès Libre" : "Membre";
                 
                 if (!isUserAnonymous) {
                     loginBtn.classList.add('hidden');
@@ -169,27 +180,25 @@
                 }
                 loadAds();
             } else {
-                signInAnonymously(auth);
+                initAuth();
             }
         });
 
-        // LOGIN POUR LES DEJA INSCRITS
+        // LOGIN
         window.handleLogin = async () => {
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-password').value;
-            if (!email || !pass) return alert("Remplissez vos accès");
+            if (!email || !pass) return alert("Veuillez remplir les champs.");
 
             const btn = document.getElementById('btn-login-submit');
-            btn.textContent = "Vérification...";
+            btn.textContent = "Connexion...";
             btn.disabled = true;
 
             try {
                 await signInWithEmailAndPassword(auth, email, pass);
                 toggleModal('modal-auth');
-                alert("Ravi de vous revoir !");
             } catch (error) {
-                alert("Identifiants incorrects.");
-                console.error(error);
+                alert("Erreur: Identifiants incorrects ou compte inexistant.");
             } finally {
                 btn.textContent = "Se connecter";
                 btn.disabled = false;
@@ -197,12 +206,10 @@
         };
 
         window.handleLogout = () => {
-            signOut(auth).then(() => {
-                location.reload();
-            });
+            signOut(auth).then(() => location.reload());
         };
 
-        // IMAGE PREVIEW
+        // PREVIEW IMAGE
         window.previewImage = (event) => {
             const file = event.target.files[0];
             if (!file) return;
@@ -216,17 +223,19 @@
             reader.readAsDataURL(file);
         };
 
-        // LOAD DATA
+        // CHARGEMENT DONNEES
         const loadAds = () => {
-            const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'ads'));
+            const adsRef = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
+            const q = query(adsRef);
+            
             onSnapshot(q, (snap) => {
                 const container = document.getElementById('ads-container');
                 const empty = document.getElementById('empty-state');
                 container.innerHTML = "";
                 
-                if (snap.empty) { 
-                    empty.classList.remove('hidden'); 
-                    return; 
+                if (snap.empty) {
+                    empty.classList.remove('hidden');
+                    return;
                 }
                 
                 empty.classList.add('hidden');
@@ -236,7 +245,7 @@
                     card.className = "bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden card-hover p-4 transition-all";
                     card.innerHTML = `
                         <div class="relative h-56 rounded-[2rem] overflow-hidden bg-slate-100 mb-4">
-                            <img src="${d.image || 'https://via.placeholder.com/400x300'}" class="w-full h-full object-cover">
+                            <img src="${d.image || 'https://via.placeholder.com/400x300'}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x300'">
                         </div>
                         <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">${d.category || 'Général'}</span>
                         <h4 class="font-bold text-slate-800 text-lg mb-1 leading-tight">${d.title}</h4>
@@ -244,20 +253,24 @@
                     `;
                     container.appendChild(card);
                 });
+            }, (err) => {
+                console.error("Snapshot error:", err);
             });
         };
 
-        // SAVE DATA
+        // SAUVEGARDE
         window.saveAd = async () => {
+            if (!auth.currentUser) return alert("Connexion en cours, réessayez dans un instant.");
+
             const title = document.getElementById('ad-title').value;
             const price = document.getElementById('ad-price').value;
             const category = document.getElementById('ad-category').value;
             
-            if (!title || !price || !currentImageBase64) return alert("Informations manquantes.");
+            if (!title || !price || !currentImageBase64) return alert("Veuillez remplir tous les champs.");
             
             const btn = document.getElementById('submit-ad');
             btn.disabled = true;
-            btn.textContent = "Mise en ligne...";
+            btn.textContent = "Publication...";
 
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'ads'), {
@@ -266,25 +279,27 @@
                     image: currentImageBase64, 
                     category, 
                     createdAt: serverTimestamp(),
-                    userId: auth.currentUser.uid,
-                    authorType: isUserAnonymous ? 'guest' : 'member'
+                    userId: auth.currentUser.uid
                 });
                 document.getElementById('ad-form').reset();
                 document.getElementById('image-preview').style.display = "none";
                 currentImageBase64 = "";
                 toggleModal('modal-annonce');
-            } catch (e) { 
-                alert("Erreur de publication."); 
+            } catch (e) {
+                alert("Erreur lors de la publication.");
             } finally {
                 btn.disabled = false;
                 btn.textContent = "Publier sur le Marché";
             }
         };
+
+        initAuth();
     </script>
 
     <script>
         function toggleModal(id) {
-            document.getElementById(id).classList.toggle('hidden');
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
             document.body.classList.toggle('modal-open');
         }
     </script>
