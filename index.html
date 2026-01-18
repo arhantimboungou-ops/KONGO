@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KONGO MARKET | L'Excellence Africaine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary: #10b981;
+            --accent: #059669;
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            min-height: 100vh;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #ecfdf5, transparent),
+                        radial-gradient(circle at bottom left, #f0f9ff, transparent);
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade { animation: fadeIn 0.5s ease-out forwards; }
+        
+        /* Custom scrollbar for country list */
+        select::-webkit-scrollbar {
+            width: 6px;
+        }
+        select::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <!-- Navigation -->
+    <nav class="glass sticky top-0 z-[60] h-20 flex items-center border-b border-slate-200/50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-3 group cursor-pointer" onclick="window.location.reload()">
+                <div class="w-11 h-11 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-200 rotate-3 group-hover:rotate-0 transition-transform duration-300">
+                    <i class="fas fa-shopping-bag text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight leading-none">KONGO<span class="text-emerald-600">MARKET</span></h1>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Premium Marketplace</p>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8 font-semibold text-sm text-slate-600">
+                <a href="#" class="nav-link relative">Immobilier</a>
+                <a href="#" class="nav-link relative">Véhicules</a>
+                <a href="#" class="nav-link relative">Services</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div id="auth-controls" class="flex items-center gap-2">
+                    <button onclick="openAuthModal('login')" class="px-5 py-2 text-sm font-bold text-slate-700 hover:text-emerald-600 transition">Connexion</button>
+                    <button onclick="checkAuthAndPost()" class="bg-slate-900 text-white px-6 py-2.5 rounded-2xl font-bold text-sm shadow-xl hover:bg-emerald-600 transition-colors duration-300 active:scale-95">
+                        <i class="fas fa-plus mr-2"></i>Vendre
+                    </button>
+                </div>
+                <div id="user-info" class="hidden flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center text-xs font-bold" id="user-avatar">U</div>
+                    <span id="display-username" class="text-xs font-bold text-slate-700 max-w-[100px] truncate"></span>
+                    <button onclick="handleSignOut()" class="text-slate-300 hover:text-red-500 transition ml-2"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient py-16 md:py-24">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight leading-tight animate-fade">
+                Trouvez tout ce que <br><span class="text-emerald-600 italic">l'Afrique</span> a de meilleur.
+            </h2>
+            <p class="text-slate-500 max-w-2xl mx-auto text-lg mb-10 font-medium">
+                La plateforme sécurisée pour acheter et vendre au Congo, en Côte d'Ivoire et partout sur le continent.
+            </p>
+            
+            <div class="max-w-4xl mx-auto glass p-2 rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row gap-2">
+                <div class="flex-1 flex items-center px-6 py-3 border-b md:border-b-0 md:border-r border-slate-200">
+                    <i class="fas fa-search text-slate-300 mr-4"></i>
+                    <input type="text" placeholder="Que cherchez-vous ?" class="bg-transparent w-full outline-none font-medium placeholder:text-slate-400">
+                </div>
+                <div class="md:w-64 flex items-center px-6 py-3">
+                    <i class="fas fa-map-marker-alt text-emerald-500 mr-4"></i>
+                    <select id="country-selector" class="bg-transparent w-full outline-none font-bold text-slate-700 appearance-none cursor-pointer">
+                        <option value="all">Tous les pays d'Afrique</option>
+                    </select>
+                </div>
+                <button class="bg-emerald-600 text-white px-10 py-4 rounded-[2rem] font-bold hover:bg-emerald-700 transition shadow-lg shadow-emerald-200">
+                    Rechercher
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <main class="container mx-auto px-6 -mt-8 relative z-10 pb-20">
+        <div class="flex items-center justify-between mb-10">
+            <h3 class="text-2xl font-extrabold text-slate-800">Dernières Annonces</h3>
+            <div class="flex gap-2">
+                <button class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-emerald-600 hover:border-emerald-600 transition"><i class="fas fa-th-large"></i></button>
+                <button class="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-emerald-600 hover:border-emerald-600 transition"><i class="fas fa-list"></i></button>
+            </div>
+        </div>
+
+        <div id="ads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Skeleton cards while loading -->
+            <div class="animate-pulse bg-white/50 h-[400px] rounded-[2.5rem] border border-slate-100"></div>
+            <div class="animate-pulse bg-white/50 h-[400px] rounded-[2.5rem] border border-slate-100"></div>
+            <div class="animate-pulse bg-white/50 h-[400px] rounded-[2.5rem] border border-slate-100"></div>
+            <div class="animate-pulse bg-white/50 h-[400px] rounded-[2.5rem] border border-slate-100"></div>
+        </div>
+    </main>
+
+    <!-- Modal Authentification -->
+    <div id="modal-auth" class="fixed inset-0 bg-slate-900/40 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[3rem] w-full max-w-[440px] overflow-hidden shadow-[0_32px_64px_-15px_rgba(0,0,0,0.2)] transition-all duration-500 scale-95 opacity-0" id="auth-container">
+            
+            <div id="step-identity" class="p-10">
+                <div class="flex justify-center mb-8">
+                    <div class="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center text-2xl rotate-6">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+                
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight" id="auth-title">Bienvenue</h2>
+                    <p class="text-slate-400 text-sm mt-2 font-medium" id="auth-subtitle">Ravi de vous revoir sur Kongo Market</p>
+                </div>
+
+                <div class="space-y-5">
+                    <div id="signup-fields" class="space-y-5 hidden">
+                        <div class="group relative">
+                            <input type="text" id="reg-name" placeholder="Votre nom complet" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl font-semibold outline-none focus:border-emerald-500 focus:bg-white transition-all">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <div class="relative w-32">
+                            <select id="reg-prefix" class="w-full px-4 py-4 bg-slate-50 border-2 border-transparent rounded-2xl font-bold text-sm outline-none appearance-none cursor-pointer focus:border-emerald-500">
+                                <option value="+242">🇨🇬 +242</option>
+                                <option value="+243">🇨🇩 +243</option>
+                                <option value="+225">🇨🇮 +225</option>
+                                <option value="+221">🇸🇳 +221</option>
+                                <option value="+237">🇨🇲 +237</option>
+                                <option value="+241">🇬🇦 +241</option>
+                                <option value="+229">🇧🇯 +229</option>
+                                <option value="+228">🇹🇬 +228</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+                        </div>
+                        <input type="tel" id="reg-phone" placeholder="Numéro mobile" class="flex-1 px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl font-bold outline-none focus:border-emerald-500 focus:bg-white transition-all">
+                    </div>
+
+                    <div class="group relative">
+                        <input type="password" id="reg-pass" placeholder="Mot de passe" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl font-semibold outline-none focus:border-emerald-500 focus:bg-white transition-all">
+                    </div>
+
+                    <button onclick="startVerification()" class="w-full bg-slate-900 text-white py-4.5 rounded-2xl font-extrabold text-sm uppercase tracking-widest shadow-xl hover:bg-emerald-600 active:scale-[0.98] transition-all duration-300">
+                        Continuer
+                    </button>
+                    
+                    <div class="flex flex-col gap-4 pt-4 text-center">
+                        <button onclick="toggleAuthMode()" id="toggle-text" class="text-xs font-bold text-emerald-600 uppercase tracking-widest hover:text-emerald-700 transition">
+                            Créer un compte gratuit
+                        </button>
+                        <button onclick="closeAuthModal()" class="text-xs font-bold text-slate-300 uppercase tracking-widest hover:text-slate-500">Fermer</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="step-otp" class="p-12 hidden text-center animate-fade">
+                <div class="w-20 h-20 bg-emerald-50 text-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-8 shadow-inner shadow-emerald-100/50">
+                    <i class="fas fa-fingerprint text-3xl"></i>
+                </div>
+                <h2 class="text-3xl font-black text-slate-900 tracking-tight">Vérification</h2>
+                <p class="text-slate-400 text-sm mt-3 mb-10 leading-relaxed font-medium">Un code de sécurité a été envoyé au <br><span id="otp-display-phone" class="text-emerald-600 font-bold"></span></p>
+
+                <div class="flex justify-center gap-3 mb-12">
+                    <input type="text" maxlength="1" class="otp-input w-14 h-16 bg-slate-50 border-2 border-slate-100 rounded-2xl text-center font-bold text-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all">
+                    <input type="text" maxlength="1" class="otp-input w-14 h-16 bg-slate-50 border-2 border-slate-100 rounded-2xl text-center font-bold text-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all">
+                    <input type="text" maxlength="1" class="otp-input w-14 h-16 bg-slate-50 border-2 border-slate-100 rounded-2xl text-center font-bold text-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all">
+                    <input type="text" maxlength="1" class="otp-input w-14 h-16 bg-slate-50 border-2 border-slate-100 rounded-2xl text-center font-bold text-2xl outline-none focus:border-emerald-500 focus:bg-white transition-all">
+                </div>
+
+                <button onclick="finalizeAuth()" class="w-full bg-emerald-600 text-white py-4.5 rounded-2xl font-extrabold text-sm uppercase tracking-widest shadow-xl shadow-emerald-100 hover:bg-emerald-700 active:scale-[0.98] transition-all">
+                    Vérifier le compte
+                </button>
+                <button onclick="resetAuth()" class="mt-8 text-xs font-bold text-slate-400 uppercase tracking-widest hover:text-emerald-600">Modifier le numéro</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signInAnonymously, signInWithCustomToken, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kongo-market-app';
+
+        let auth, db, currentUser = null;
+        let mode = 'login';
+        let unsubAds = null;
+
+        // LISTE COMPLÈTE DES 54 PAYS D'AFRIQUE
+        const africanCountries = [
+            "Afrique du Sud", "Algérie", "Angola", "Bénin", "Botswana", "Burkina Faso", "Burundi", "Cameroun", "Cap-Vert", 
+            "Comores", "Congo (Brazzaville)", "Congo (Kinshasa)", "Côte d'Ivoire", "Djibouti", "Égypte", "Érythrée", "Eswatini", 
+            "Éthiopie", "Gabon", "Gambie", "Ghana", "Guinée", "Guinée-Bissau", "Guinée équatoriale", "Kenya", "Lesotho", 
+            "Liberia", "Libye", "Madagascar", "Malawi", "Mali", "Maroc", "Maurice", "Mauritanie", "Mozambique", "Namibie", 
+            "Niger", "Nigeria", "Ouganda", "Rwanda", "Sao Tomé-et-Principe", "Sénégal", "Seychelles", "Sierra Leone", 
+            "Somalie", "Soudan", "Soudan du Sud", "Tanzanie", "Tchad", "Togo", "Tunisie", "Zambie", "Zimbabwe"
+        ];
+
+        const init = async () => {
+            if(!firebaseConfig.apiKey) return;
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            // Remplissage du sélecteur de pays
+            const sel = document.getElementById('country-selector');
+            africanCountries.sort().forEach(c => {
+                const o = document.createElement('option');
+                o.value = c;
+                o.textContent = c;
+                sel.appendChild(o);
+            });
+
+            // Gérer l'authentification PRIORITAIRE (Règle 3)
+            const performAuth = async () => {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            };
+
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                updateHeaderUI(user);
+                
+                // Lancement de l'écouteur Firestore UNIQUEMENT après confirmation Auth
+                if (user) {
+                    startAdsListener();
+                } else {
+                    if (unsubAds) unsubAds();
+                }
+            });
+
+            await performAuth().catch(e => console.error("Critical Auth Error:", e));
+
+            // Focus automatique pour OTP
+            document.querySelectorAll('.otp-input').forEach((input, i, all) => {
+                input.oninput = () => { if(input.value && i < 3) all[i+1].focus(); };
+                input.onkeydown = (e) => { if(e.key === "Backspace" && !input.value && i > 0) all[i-1].focus(); };
+            });
+        };
+
+        const updateHeaderUI = (user) => {
+            const ctrl = document.getElementById('auth-controls');
+            const info = document.getElementById('user-info');
+            const nameDisp = document.getElementById('display-username');
+            const avatar = document.getElementById('user-avatar');
+
+            if (user && !user.isAnonymous) {
+                ctrl.classList.add('hidden');
+                info.classList.remove('hidden');
+                const name = user.displayName || "Membre";
+                nameDisp.textContent = name;
+                avatar.textContent = name.charAt(0).toUpperCase();
+            } else {
+                ctrl.classList.remove('hidden');
+                info.classList.add('hidden');
+            }
+        };
+
+        const startAdsListener = () => {
+            if (unsubAds) unsubAds();
+            // Chemin strict (Règle 1)
+            const adsRef = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
+            
+            unsubAds = onSnapshot(adsRef, (snap) => {
+                const grid = document.getElementById('ads-grid');
+                grid.innerHTML = "";
+                
+                if(snap.empty) {
+                    grid.innerHTML = `
+                        <div class="col-span-full py-24 text-center glass rounded-[3rem]">
+                            <div class="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-box-open text-2xl"></i>
+                            </div>
+                            <p class="text-slate-400 font-bold">Bienvenue ! Aucune annonce pour le moment.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                snap.forEach(doc => {
+                    const ad = doc.data();
+                    grid.innerHTML += `
+                        <div class="group bg-white rounded-[2.5rem] overflow-hidden card-shadow border border-white hover:border-emerald-100 transition-all duration-500 hover:-translate-y-2">
+                            <div class="h-60 bg-slate-100 relative overflow-hidden">
+                                <img src="${ad.image || 'https://images.unsplash.com/photo-1592833159155-c62df1b65634?auto=format&fit=crop&q=80&w=600'}" 
+                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="absolute top-4 left-4 glass px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider text-slate-700">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 mr-1.5"></i>${ad.country}
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="font-bold text-slate-800 line-clamp-1 mb-1">${ad.title}</h3>
+                                <p class="text-emerald-600 font-black text-xl mb-6">${new Intl.NumberFormat().format(ad.price)} <span class="text-xs">FCFA</span></p>
+                                <div class="flex gap-2">
+                                    <button class="flex-1 bg-slate-900 text-white py-3 rounded-2xl text-xs font-extrabold hover:bg-emerald-600 transition duration-300">Détails</button>
+                                    <button class="w-11 h-11 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center hover:bg-emerald-600 hover:text-white transition shadow-sm"><i class="fas fa-phone-alt text-sm"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }, (err) => {
+                console.warn("Firestore status: En attente de synchronisation...", err.message);
+            });
+        };
+
+        // --- AUTH LOGIC ---
+        window.toggleAuthMode = () => {
+            mode = mode === 'signup' ? 'login' : 'signup';
+            document.getElementById('auth-title').textContent = mode === 'signup' ? 'Créer un compte' : 'Bienvenue';
+            document.getElementById('signup-fields').classList.toggle('hidden', mode === 'login');
+            document.getElementById('toggle-text').textContent = mode === 'signup' ? 'Déjà un compte ? Connexion' : 'Créer un compte gratuit';
+        };
+
+        window.openAuthModal = () => {
+            const modal = document.getElementById('modal-auth');
+            const container = document.getElementById('auth-container');
+            modal.classList.remove('hidden');
+            setTimeout(() => { container.classList.remove('scale-95', 'opacity-0'); }, 10);
+        };
+
+        window.closeAuthModal = () => {
+            const container = document.getElementById('auth-container');
+            container.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('modal-auth').classList.add('hidden');
+                resetAuth();
+            }, 300);
+        };
+
+        window.startVerification = () => {
+            const phone = document.getElementById('reg-phone').value;
+            if(!phone || phone.length < 5) return alert("Veuillez saisir un numéro valide");
+            if (mode === 'login') finalizeAuth(); 
+            else {
+                document.getElementById('otp-display-phone').textContent = phone;
+                document.getElementById('step-identity').classList.add('hidden');
+                document.getElementById('step-otp').classList.remove('hidden');
+            }
+        };
+
+        window.finalizeAuth = async () => {
+            const prefix = document.getElementById('reg-prefix').value;
+            const phone = document.getElementById('reg-phone').value;
+            const email = (prefix + phone).replace('+', '') + "@kongo.market";
+            const pass = document.getElementById('reg-pass').value;
+            const name = document.getElementById('reg-name').value;
+
+            try {
+                if(mode === 'signup') {
+                    const res = await createUserWithEmailAndPassword(auth, email, pass);
+                    await updateProfile(res.user, { displayName: name });
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+                window.closeAuthModal();
+            } catch (e) {
+                alert("Identifiants incorrects ou compte déjà existant.");
+            }
+        };
+
+        window.resetAuth = () => {
+            document.getElementById('step-identity').classList.remove('hidden');
+            document.getElementById('step-otp').classList.add('hidden');
+        };
+
+        window.handleSignOut = () => signOut(auth).then(() => window.location.reload());
+
+        window.checkAuthAndPost = () => {
+            if (!currentUser || currentUser.isAnonymous) window.openAuthModal();
+            else alert("L'espace vendeur est en cours de déploiement !");
+        };
+
+        init();
+    </script>
+</body>
+</html>
