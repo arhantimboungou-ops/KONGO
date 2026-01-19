@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KONGO MARKET PRO | Marketplace Intelligente</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -10,113 +10,137 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root { --primary: #10b981; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; -webkit-tap-highlight-color: transparent; }
         
-        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .glass-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
         
         .premium-card { 
             background: white;
-            border-radius: 24px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
             border: 1px solid rgba(0,0,0,0.03);
+            overflow: hidden;
         }
-        .premium-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08); }
+        .premium-card:active { transform: scale(0.98); }
 
         .loader-active { display: flex !important; }
-        
-        .cat-btn.active { background-color: var(--primary); color: white; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3); }
+        .cat-btn.active { background-color: var(--primary); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); border-color: transparent; }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        /* Toast Notifications */
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none; }
+        .toast { background: #1e293b; color: white; padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 600; shadow: 0 10px 30px rgba(0,0,0,0.2); animation: slideUp 0.3s ease-out forwards; pointer-events: auto; display: flex; align-items: center; justify-content: space-between; }
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+        
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        /* Floating Action Button */
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--primary); border-radius: 50%; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; z-index: 90; transition: transform 0.2s; }
+        .fab:active { transform: scale(0.9); }
+
+        ::-webkit-scrollbar { width: 0px; }
     </style>
 </head>
-<body>
+<body class="pb-24">
 
-    <!-- Overlay de chargement -->
-    <div id="global-loader" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[1000] hidden items-center justify-center flex-col gap-4">
-        <div class="w-14 h-14 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-white font-bold tracking-widest uppercase text-xs">Traitement sécurisé...</p>
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <!-- Overlay Chargement -->
+    <div id="global-loader" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[1000] hidden items-center justify-center flex-col gap-4">
+        <div class="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-white font-bold tracking-widest uppercase text-xs">Chargement...</p>
     </div>
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 glass-nav h-20">
+    <nav class="sticky top-0 z-50 glass-nav h-16 md:h-20">
         <div class="container mx-auto px-4 flex justify-between items-center h-full">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-                <div class="w-12 h-12 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-xl rotate-3 hover:rotate-0 transition-all">
-                    <i class="fas fa-bolt text-xl"></i>
+            <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
+                <div class="w-9 h-9 bg-emerald-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                    <i class="fas fa-shopping-bag text-sm"></i>
                 </div>
-                <div>
-                    <h1 class="text-xl font-extrabold text-slate-900 leading-none">KONGO<span class="text-emerald-500">MARKET</span></h1>
-                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Version Intelligence Pro</span>
-                </div>
+                <h1 class="text-lg font-black text-slate-900 leading-none tracking-tight">KONGO<span class="text-emerald-500">MARKET</span></h1>
             </div>
 
-            <div class="flex items-center gap-2 md:gap-4">
+            <div class="flex items-center gap-3">
                 <div id="user-controls" class="hidden flex items-center gap-2">
-                    <button onclick="toggleViewMode()" id="toggle-view-btn" class="p-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 transition-all">
-                        <i class="fas fa-boxes-stacked"></i>
+                    <button onclick="toggleViewMode()" id="toggle-view-btn" class="px-3 py-2 rounded-xl bg-slate-100 text-slate-600 text-[10px] font-black uppercase tracking-wide hover:bg-emerald-50 hover:text-emerald-600 transition-all">
+                        Mes Annonces
                     </button>
-                    <button onclick="handleSignOut()" class="w-10 h-10 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all">
-                        <i class="fas fa-power-off"></i>
+                    <button onclick="handleSignOut()" class="w-9 h-9 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+                        <i class="fas fa-power-off text-xs"></i>
                     </button>
                 </div>
-                <button onclick="checkAuthForAdd()" class="bg-slate-900 text-white px-6 py-3.5 rounded-2xl font-bold text-sm hover:bg-emerald-600 shadow-xl transition-all flex items-center gap-2">
-                    <i class="fas fa-plus-circle"></i> <span class="hidden md:inline">Publier</span>
+                <button id="login-btn" onclick="openAuthModal('login')" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-xl transition-all">
+                    Connexion
                 </button>
             </div>
         </div>
     </nav>
 
     <!-- Header & Filtres -->
-    <header class="bg-white border-b py-12 mb-8">
+    <header class="bg-white border-b pt-8 pb-6 mb-6">
         <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto text-center mb-10">
-                <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-4">Trouvez ce dont vous avez besoin.</h2>
-                <div class="relative group">
-                    <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-emerald-500 transition-colors"></i>
-                    <input type="text" id="search-bar" oninput="handleSearch()" placeholder="iPhone, Toyota, Appartement..." class="w-full pl-14 pr-6 py-5 rounded-[2rem] bg-slate-50 border-2 border-transparent focus:border-emerald-500 outline-none transition-all shadow-sm text-lg font-medium">
-                </div>
+            <div class="relative group mb-6">
+                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="search-bar" oninput="handleSearch()" placeholder="Rechercher (ex: iPhone 14)..." class="w-full pl-12 pr-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-emerald-500 outline-none transition-all font-bold text-sm">
             </div>
             
-            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2 justify-start md:justify-center" id="category-bar">
+            <div class="flex gap-3 overflow-x-auto no-scrollbar pb-2" id="category-bar">
                 <!-- Filtres injectés ici -->
             </div>
         </div>
     </header>
 
     <!-- Grid -->
-    <main class="container mx-auto px-4 pb-20 min-h-[50vh]">
-        <div id="status-text" class="mb-8 flex justify-between items-end">
-            <div>
-                <h3 id="view-title" class="text-xl font-black text-slate-900 uppercase">Annonces récentes</h3>
-                <p id="results-count" class="text-xs font-bold text-slate-400 mt-1">Recherche de pépites...</p>
-            </div>
+    <main class="container mx-auto px-4 min-h-[50vh]">
+        <div class="flex justify-between items-end mb-6">
+            <h3 id="view-title" class="text-lg font-black text-slate-900 uppercase tracking-tight">Le Marché</h3>
+            <p id="results-count" class="text-[10px] font-bold text-slate-400 uppercase bg-slate-100 px-2 py-1 rounded-lg">Chargement...</p>
         </div>
 
-        <div id="ads-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Squelette de chargement ou Annonces -->
+        <div id="ads-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Contenu -->
         </div>
     </main>
 
+    <!-- FAB Mobile (Vendre) -->
+    <button onclick="checkAuthForAdd()" class="fab md:hidden">
+        <i class="fas fa-plus"></i>
+    </button>
+
     <!-- Modal Détails -->
     <div id="modal-details" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[200] hidden items-center justify-center p-4">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row shadow-2xl animate-pop relative">
-            <button onclick="closeDetails()" class="absolute right-6 top-6 z-10 w-10 h-10 rounded-full bg-white/90 shadow-lg flex items-center justify-center text-slate-900 hover:scale-110 transition-transform">
+        <div class="bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col md:flex-row shadow-2xl relative animate-pop">
+            <button onclick="closeDetails()" class="absolute right-4 top-4 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur shadow-sm flex items-center justify-center text-slate-900">
                 <i class="fas fa-times"></i>
             </button>
-            <div class="w-full md:w-1/2 h-64 md:h-auto bg-slate-100">
+            <div class="w-full md:w-1/2 h-64 md:h-auto bg-slate-100 relative">
                 <img id="det-img" src="" class="w-full h-full object-cover">
-            </div>
-            <div class="w-full md:w-1/2 p-8 md:p-12 overflow-y-auto">
-                <span id="det-cat" class="text-[10px] font-black uppercase text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full"></span>
-                <h3 id="det-title" class="text-3xl font-black text-slate-900 mt-4 mb-2"></h3>
-                <p id="det-price" class="text-2xl font-extrabold text-emerald-500 mb-6"></p>
-                <div class="bg-slate-50 rounded-2xl p-6 mb-8">
-                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Description</h4>
-                    <p id="det-desc" class="text-slate-600 leading-relaxed whitespace-pre-line"></p>
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6 pt-20">
+                    <p id="det-price" class="text-3xl font-black text-white tracking-tight"></p>
                 </div>
-                <div class="flex gap-4">
-                    <a id="det-call" href="#" class="flex-1 bg-slate-900 text-white py-4 rounded-2xl font-black text-center hover:bg-emerald-600 transition-all shadow-xl">CONTACTER</a>
+            </div>
+            <div class="w-full md:w-1/2 p-6 md:p-10 overflow-y-auto bg-white">
+                <span id="det-cat" class="text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md tracking-wider"></span>
+                <h3 id="det-title" class="text-2xl font-black text-slate-900 mt-3 mb-6 leading-tight"></h3>
+                
+                <div class="mb-8">
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Description</h4>
+                    <p id="det-desc" class="text-sm text-slate-600 leading-relaxed whitespace-pre-line font-medium"></p>
+                </div>
+
+                <div class="border-t border-slate-100 pt-6">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-3">Vendeur</p>
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold" id="det-seller-initial">?</div>
+                            <p id="det-seller" class="font-bold text-slate-900 text-sm"></p>
+                        </div>
+                    </div>
+                    <a id="det-call" href="#" target="_blank" class="block w-full bg-[#25D366] text-white py-4 rounded-xl font-black text-center hover:opacity-90 transition-all shadow-lg flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i> Discuter sur WhatsApp
+                    </a>
                 </div>
             </div>
         </div>
@@ -124,65 +148,75 @@
 
     <!-- Modal Publication -->
     <div id="modal-post" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[200] hidden items-center justify-center p-4">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-2xl p-8 md:p-12 shadow-2xl relative max-h-[95vh] overflow-y-auto no-scrollbar">
-            <div class="text-center mb-10">
-                <h3 class="text-2xl font-black text-slate-900 mb-2">PUBLIER UNE ANNONCE</h3>
-                <p class="text-xs font-bold text-slate-400 uppercase">Remplissez les informations essentielles</p>
+        <div class="bg-white rounded-[2rem] w-full max-w-lg p-6 md:p-8 shadow-2xl relative max-h-[95vh] overflow-y-auto no-scrollbar">
+            <div class="text-center mb-6">
+                <h3 class="text-xl font-black text-slate-900">VENDRE UN ARTICLE</h3>
             </div>
             
-            <form id="post-form" class="space-y-6">
-                <!-- Zone Upload -->
-                <div class="relative group h-48 border-4 border-dashed border-slate-100 rounded-[2rem] overflow-hidden bg-slate-50 flex items-center justify-center transition-all hover:border-emerald-300">
-                    <input type="file" id="f-file" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-10" required>
+            <form id="post-form" class="space-y-4">
+                <div class="relative h-40 border-2 border-dashed border-slate-200 rounded-2xl overflow-hidden bg-slate-50 flex items-center justify-center cursor-pointer hover:border-emerald-400 transition-colors" onclick="document.getElementById('f-file').click()">
+                    <input type="file" id="f-file" accept="image/*" class="hidden">
                     <img id="f-preview" class="absolute inset-0 w-full h-full object-cover hidden">
                     <div id="f-prompt" class="text-center">
-                        <div class="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-3 text-emerald-500">
-                            <i class="fas fa-camera text-2xl"></i>
-                        </div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ajouter une photo</p>
+                        <i class="fas fa-camera text-2xl text-slate-300 mb-2"></i>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Ajouter photo</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="col-span-2">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Titre de l'objet</label>
-                        <input type="text" id="f-title" required placeholder="Ex: Samsung S24 Ultra Neuf" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:border-emerald-500 outline-none font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Prix (FCFA)</label>
-                        <input type="number" id="f-price" required placeholder="0" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:border-emerald-500 outline-none font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Catégorie</label>
-                        <select id="f-cat" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:border-emerald-500 outline-none font-bold">
-                            <option>Électronique</option>
-                            <option>Véhicules</option>
-                            <option>Immobilier</option>
-                            <option>Mode</option>
-                            <option>Services</option>
-                        </select>
-                    </div>
+                <input type="text" id="f-title" required placeholder="Titre (ex: Salon complet)" class="w-full px-5 py-3.5 bg-slate-50 border-2 border-transparent rounded-xl focus:border-emerald-500 outline-none font-bold text-sm">
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="number" id="f-price" required placeholder="Prix" class="w-full px-5 py-3.5 bg-slate-50 border-2 border-transparent rounded-xl focus:border-emerald-500 outline-none font-bold text-sm">
+                    <select id="f-cat" class="w-full px-5 py-3.5 bg-slate-50 border-2 border-transparent rounded-xl focus:border-emerald-500 outline-none font-bold text-sm bg-none"></select>
                 </div>
 
-                <div>
-                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Description complète</label>
-                    <textarea id="f-desc" rows="4" required placeholder="Détaillez l'état, les options, le lieu de vente..." class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:border-emerald-500 outline-none font-bold"></textarea>
-                </div>
+                <select id="f-country" class="w-full px-5 py-3.5 bg-slate-50 border-2 border-transparent rounded-xl focus:border-emerald-500 outline-none font-bold text-sm"></select>
 
-                <div class="flex gap-4 pt-4">
-                    <button type="button" onclick="closePost()" class="flex-1 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-900 transition-all">Annuler</button>
-                    <button type="submit" class="flex-[2] bg-emerald-500 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest shadow-xl shadow-emerald-100 hover:bg-emerald-600 transition-all">Publier l'annonce</button>
+                <textarea id="f-desc" rows="3" required placeholder="Description..." class="w-full px-5 py-3.5 bg-slate-50 border-2 border-transparent rounded-xl focus:border-emerald-500 outline-none font-bold text-sm"></textarea>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closePost()" class="flex-1 py-3 text-[10px] font-bold uppercase text-slate-400 bg-slate-50 rounded-xl hover:bg-slate-100">Annuler</button>
+                    <button type="submit" class="flex-[2] bg-emerald-500 text-white py-3 rounded-xl font-bold uppercase tracking-widest shadow-lg hover:bg-emerald-600 text-xs">Publier</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Modal Auth -->
+    <div id="modal-auth" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[200] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-sm p-8 shadow-2xl relative">
+            <button onclick="closeAuthModal()" class="absolute right-6 top-6 text-slate-300 hover:text-slate-900"><i class="fas fa-times"></i></button>
+            
+            <h3 id="auth-title" class="text-xl font-black text-center mb-6 uppercase">Connexion</h3>
+            
+            <div class="flex bg-slate-100 p-1 rounded-xl mb-6">
+                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-2.5 text-[10px] font-bold uppercase rounded-lg transition-all bg-white shadow-sm">Connexion</button>
+                <button id="tab-signup" onclick="switchAuthTab('signup')" class="flex-1 py-2.5 text-[10px] font-bold uppercase rounded-lg transition-all text-slate-400">Créer compte</button>
+            </div>
+
+            <div class="space-y-3">
+                <div id="signup-fields" class="hidden">
+                    <input type="text" id="auth-name" placeholder="Nom complet" class="w-full px-5 py-3.5 bg-slate-50 rounded-xl outline-none border-2 border-transparent focus:border-emerald-500 font-bold text-sm">
+                </div>
+                
+                <div class="flex gap-2">
+                    <select id="auth-prefix" class="bg-slate-50 rounded-xl px-2 font-bold text-xs outline-none border-2 border-transparent focus:border-emerald-500 w-24"></select>
+                    <input type="tel" id="auth-phone" placeholder="Numéro" class="flex-1 px-5 py-3.5 bg-slate-50 rounded-xl outline-none border-2 border-transparent focus:border-emerald-500 font-bold text-sm">
+                </div>
+                
+                <input type="password" id="auth-pass" placeholder="Mot de passe (6 car.)" class="w-full px-5 py-3.5 bg-slate-50 rounded-xl outline-none border-2 border-transparent focus:border-emerald-500 font-bold text-sm">
+                
+                <button onclick="handleAuthSubmit()" id="btn-auth-action" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black uppercase tracking-widest shadow-lg text-xs mt-2">Se Connecter</button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, addDoc, serverTimestamp, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURATION (Firebase)
+        // --- CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyBQ2NSk-dOMeXnGupqQJflU9r6HurSeLHQ",
             authDomain: "kongo-market-3f7ce.firebaseapp.com",
@@ -192,207 +226,294 @@
             appId: "1:95509786102:web:897c20a96e5911f75a2bd7"
         };
 
+        // --- INIT ---
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kongo-market-v2';
+        
+        // DÉTECTION ENVIRONNEMENT (Vercel vs Preview)
+        // Si __app_id existe (Preview), on utilise le chemin sécurisé. Sinon (Vercel), on utilise 'ads' à la racine.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : null;
+        
+        const getAdsCollection = () => {
+            if (appId) return collection(db, 'artifacts', appId, 'public', 'data', 'ads');
+            return collection(db, 'ads'); // Chemin pour la production/Vercel
+        };
 
-        // STATE
+        // --- DATA ---
+        const COUNTRIES = [
+            {n:"Congo (Brazza)", c:"242"}, {n:"Congo (Kinshasa)", c:"243"}, {n:"Cameroun", c:"237"}, 
+            {n:"Côte d'Ivoire", c:"225"}, {n:"Sénégal", c:"221"}, {n:"Gabon", c:"241"}, 
+            {n:"Mali", c:"223"}, {n:"Bénin", c:"229"}, {n:"Togo", c:"228"}, {n:"Burkina", c:"226"}
+        ].sort((a,b) => a.n.localeCompare(b.n));
+
+        const CATEGORIES = ["Tous", "Électronique", "Véhicules", "Immobilier", "Mode", "Maison", "Services"];
+
         let user = null;
-        let allAds = [];
-        let currentFilter = "Tous";
-        let isOwnerView = false;
-        let base64Image = null;
+        let adsData = [];
+        let activeFilter = "Tous";
+        let isUserView = false;
+        let imageBase64 = null;
+        let authMode = 'login';
 
-        // INITIALISATION
+        // --- STARTUP ---
         const init = () => {
-            const categories = ["Tous", "Électronique", "Véhicules", "Immobilier", "Mode", "Services"];
+            // Remplissage UI
             const catBar = document.getElementById('category-bar');
-            catBar.innerHTML = categories.map(cat => `
-                <button onclick="setFilter('${cat}')" id="cat-${cat}" class="cat-btn px-6 py-3 rounded-2xl bg-white border border-slate-100 text-xs font-bold whitespace-nowrap transition-all hover:bg-emerald-50 ${cat === 'Tous' ? 'active' : ''}">
-                    ${cat}
+            catBar.innerHTML = CATEGORIES.map(c => `
+                <button onclick="setFilter('${c}')" id="cat-${c}" class="cat-btn px-5 py-2 rounded-xl bg-white border border-slate-100 text-[11px] font-bold whitespace-nowrap transition-all ${c==='Tous'?'active':''}">
+                    ${c}
                 </button>
             `).join('');
 
+            const fCat = document.getElementById('f-cat');
+            fCat.innerHTML = CATEGORIES.filter(c => c!=='Tous').map(c => `<option value="${c}">${c}</option>`).join('');
+
+            const fCountry = document.getElementById('f-country');
+            const authPrefix = document.getElementById('auth-prefix');
+            
+            COUNTRIES.forEach(co => {
+                fCountry.innerHTML += `<option value="${co.n}">${co.n}</option>`;
+                authPrefix.innerHTML += `<option value="${co.c}">${co.n} (+${co.c})</option>`;
+            });
+
+            // Auth Listener
             onAuthStateChanged(auth, (u) => {
                 user = u;
                 document.getElementById('user-controls').classList.toggle('hidden', !u);
-                fetchData();
+                document.getElementById('login-btn').classList.toggle('hidden', !!u);
+                
+                // Si connecté, on force le re-fetch pour voir les droits de suppression
+                loadAds();
+                if(u) showToast(`Bienvenue, ${u.displayName || 'Membre'}`, 'success');
             });
         };
 
-        // IMAGE PREVIEW
-        document.getElementById('f-file').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                // Compression intelligente simple
-                if (file.size > 2 * 1024 * 1024) {
-                    alert("Image trop lourde (max 2MB)");
-                    e.target.value = "";
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    base64Image = ev.target.result;
-                    document.getElementById('f-preview').src = base64Image;
-                    document.getElementById('f-preview').classList.remove('hidden');
-                    document.getElementById('f-prompt').classList.add('hidden');
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        // FIRESTORE SYNC
-        const fetchData = () => {
-            // Rule 1: Use specific path
-            const adsCol = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
-            const q = query(adsCol, orderBy('createdAt', 'desc'));
-
+        // --- FIRESTORE ---
+        const loadAds = () => {
+            const q = query(getAdsCollection(), orderBy('createdAt', 'desc'));
             onSnapshot(q, (snap) => {
-                allAds = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                renderAds();
-            }, (err) => console.error("Firestore Error:", err));
+                adsData = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                render();
+            }, (err) => {
+                console.error(err);
+                // Si erreur de permission (arrive si regles Firestore pas config sur Vercel), on affiche une erreur propre
+                if(err.code === 'permission-denied') {
+                    showToast("Erreur de droits d'accès. Vérifiez vos règles Firestore.", 'error');
+                }
+            });
         };
 
-        // RENDER
-        window.renderAds = () => {
-            const container = document.getElementById('ads-container');
+        // --- RENDER ---
+        window.render = () => {
+            const grid = document.getElementById('ads-container');
             const search = document.getElementById('search-bar').value.toLowerCase();
             
-            let filtered = allAds.filter(ad => {
-                const matchSearch = ad.title.toLowerCase().includes(search) || ad.description?.toLowerCase().includes(search);
-                const matchCat = currentFilter === "Tous" || ad.category === currentFilter;
-                const matchOwner = !isOwnerView || ad.ownerId === user?.uid;
-                return matchSearch && matchCat && matchOwner;
+            let filtered = adsData.filter(ad => {
+                const mCat = activeFilter === "Tous" || ad.category === activeFilter;
+                const mTxt = ad.title.toLowerCase().includes(search) || (ad.desc && ad.desc.toLowerCase().includes(search));
+                const mUser = !isUserView || (user && ad.uid === user.uid);
+                return mCat && mTxt && mUser;
             });
 
-            document.getElementById('results-count').textContent = `${filtered.length} annonce(s) disponible(s)`;
-
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-slate-100">
-                        <i class="fas fa-box-open text-4xl text-slate-200 mb-4"></i>
-                        <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest">Aucun résultat trouvé</p>
-                    </div>
-                `;
+            document.getElementById('results-count').textContent = `${filtered.length} Résultat(s)`;
+            
+            if(filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-20 text-center opacity-50"><i class="fas fa-box-open text-4xl mb-2"></i><p class="font-bold text-xs uppercase">Rien à afficher</p></div>`;
                 return;
             }
 
-            container.innerHTML = filtered.map(ad => `
-                <div class="premium-card group overflow-hidden flex flex-col h-full cursor-pointer" onclick="openDetails('${ad.id}')">
-                    <div class="h-52 overflow-hidden relative">
-                        <img src="${ad.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute top-4 left-4 bg-white/95 px-3 py-1.5 rounded-xl text-[8px] font-black uppercase text-emerald-600 shadow-sm">
-                            ${ad.category}
-                        </div>
+            grid.innerHTML = filtered.map(ad => `
+                <div class="premium-card flex flex-col cursor-pointer group" onclick="openDetails('${ad.id}')">
+                    <div class="h-48 bg-slate-100 relative overflow-hidden">
+                        <img src="${ad.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-lg text-[8px] font-black uppercase text-emerald-600 shadow-sm">${ad.category}</div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h4 class="font-bold text-slate-900 mb-2 line-clamp-2 h-10">${ad.title}</h4>
-                        <p class="text-emerald-500 font-black text-xl mb-4">
-                            ${new Intl.NumberFormat().format(ad.price)} <small class="text-[9px]">FCFA</small>
-                        </p>
-                        <div class="mt-auto pt-4 border-t flex justify-between items-center">
-                            <span class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">Posté par un Pro</span>
-                            ${isOwnerView ? `
-                                <button onclick="event.stopPropagation(); deleteAd('${ad.id}')" class="w-9 h-9 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all">
-                                    <i class="fas fa-trash-alt text-xs"></i>
-                                </button>
-                            ` : `
-                                <div class="w-9 h-9 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center">
-                                    <i class="fas fa-chevron-right text-[10px]"></i>
-                                </div>
-                            `}
+                    <div class="p-4 flex-1 flex flex-col">
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-bold text-slate-900 text-sm line-clamp-1">${ad.title}</h4>
+                        </div>
+                        <p class="text-xs text-slate-500 line-clamp-2 mb-3">${ad.desc}</p>
+                        <div class="mt-auto flex justify-between items-center pt-3 border-t border-slate-50">
+                            <span class="font-black text-emerald-600 text-sm">${new Intl.NumberFormat('fr-FR').format(ad.price)} FCFA</span>
+                            ${isUserView ? 
+                                `<button onclick="event.stopPropagation(); deleteAd('${ad.id}')" class="text-red-500 hover:bg-red-50 p-2 rounded-lg transition-all"><i class="fas fa-trash"></i></button>` :
+                                `<span class="text-[9px] font-bold text-slate-400 uppercase">${ad.country}</span>`
+                            }
                         </div>
                     </div>
                 </div>
             `).join('');
         };
 
-        // ACTIONS
+        // --- ACTIONS ---
         window.setFilter = (cat) => {
-            currentFilter = cat;
+            activeFilter = cat;
             document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`cat-${cat}`).classList.add('active');
-            renderAds();
+            isUserView = false;
+            document.getElementById('view-title').textContent = "Le Marché";
+            document.getElementById('toggle-view-btn').classList.remove('bg-emerald-100', 'text-emerald-600');
+            render();
         };
-
-        window.handleSearch = () => renderAds();
 
         window.toggleViewMode = () => {
-            isOwnerView = !isOwnerView;
-            document.getElementById('view-title').textContent = isOwnerView ? "Mes Annonces" : "Annonces récentes";
-            document.getElementById('toggle-view-btn').classList.toggle('bg-emerald-500', isOwnerView);
-            document.getElementById('toggle-view-btn').classList.toggle('text-white', isOwnerView);
-            renderAds();
-        };
-
-        window.checkAuthForAdd = async () => {
-            if (!user) {
-                document.getElementById('global-loader').classList.add('loader-active');
-                try {
-                    await signInAnonymously(auth);
-                } catch (e) { alert("Erreur de connexion."); }
-                document.getElementById('global-loader').classList.remove('loader-active');
+            isUserView = !isUserView;
+            const btn = document.getElementById('toggle-view-btn');
+            if(isUserView) {
+                btn.classList.add('bg-emerald-100', 'text-emerald-600');
+                document.getElementById('view-title').textContent = "Mes Ventes";
+            } else {
+                btn.classList.remove('bg-emerald-100', 'text-emerald-600');
+                document.getElementById('view-title').textContent = "Le Marché";
             }
-            document.getElementById('modal-post').classList.remove('hidden');
+            render();
         };
 
-        window.closePost = () => document.getElementById('modal-post').classList.add('hidden');
+        window.handleSearch = () => render();
 
-        document.getElementById('post-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!base64Image) return alert("Photo obligatoire.");
+        // --- POSTING ---
+        window.checkAuthForAdd = () => {
+            if(!user) {
+                showToast("Connectez-vous pour vendre", "error");
+                openAuthModal('login');
+            } else {
+                document.getElementById('modal-post').classList.remove('hidden');
+            }
+        };
 
-            document.getElementById('global-loader').classList.add('loader-active');
-
-            try {
-                const adsCol = collection(db, 'artifacts', appId, 'public', 'data', 'ads');
-                await addDoc(adsCol, {
-                    title: document.getElementById('f-title').value.trim(),
-                    price: Number(document.getElementById('f-price').value),
-                    category: document.getElementById('f-cat').value,
-                    description: document.getElementById('f-desc').value.trim(),
-                    image: base64Image,
-                    ownerId: user.uid,
-                    createdAt: serverTimestamp()
-                });
-                
-                e.target.reset();
-                base64Image = null;
-                document.getElementById('f-preview').classList.add('hidden');
-                document.getElementById('f-prompt').classList.remove('hidden');
-                closePost();
-            } catch (err) {
-                alert("Erreur de publication.");
-            } finally {
-                document.getElementById('global-loader').classList.remove('loader-active');
+        document.getElementById('f-file').addEventListener('change', (e) => {
+            const f = e.target.files[0];
+            if(f) {
+                if(f.size > 3000000) return showToast("Image trop lourde (Max 3Mo)", "error");
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    imageBase64 = ev.target.result;
+                    document.getElementById('f-preview').src = imageBase64;
+                    document.getElementById('f-preview').classList.remove('hidden');
+                    document.getElementById('f-prompt').classList.add('hidden');
+                };
+                reader.readAsDataURL(f);
             }
         });
 
+        document.getElementById('post-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if(!imageBase64) return showToast("Photo obligatoire", "error");
+
+            toggleLoader(true);
+            try {
+                await addDoc(getAdsCollection(), {
+                    title: document.getElementById('f-title').value,
+                    price: Number(document.getElementById('f-price').value),
+                    category: document.getElementById('f-cat').value,
+                    country: document.getElementById('f-country').value,
+                    desc: document.getElementById('f-desc').value,
+                    image: imageBase64,
+                    uid: user.uid,
+                    seller: user.displayName,
+                    phone: user.email.split('@')[0].substring(3), // On retire le préfixe pour stockage propre si besoin
+                    fullPhone: user.email.split('@')[0], // Identifiant complet pour contact
+                    createdAt: serverTimestamp()
+                });
+                closePost();
+                document.getElementById('post-form').reset();
+                imageBase64 = null;
+                document.getElementById('f-preview').classList.add('hidden');
+                document.getElementById('f-prompt').classList.remove('hidden');
+                showToast("Annonce publiée !", "success");
+            } catch(err) {
+                console.error(err);
+                showToast("Erreur publication : " + err.message, "error");
+            }
+            toggleLoader(false);
+        });
+
         window.deleteAd = async (id) => {
-            if (confirm("Supprimer cette annonce définitivement ?")) {
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'ads', id);
-                await deleteDoc(docRef);
+            if(confirm("Supprimer ?")) {
+                toggleLoader(true);
+                try {
+                    await deleteDoc(doc(getAdsCollection(), id));
+                    showToast("Supprimé !", "success");
+                } catch(e) { showToast("Erreur suppression", "error"); }
+                toggleLoader(false);
             }
         };
 
+        // --- AUTH ---
+        window.handleAuthSubmit = async () => {
+            const name = document.getElementById('auth-name').value;
+            const prefix = document.getElementById('auth-prefix').value;
+            const phone = document.getElementById('auth-phone').value;
+            const pass = document.getElementById('auth-pass').value;
+
+            if(!phone || pass.length < 6) return showToast("Vérifiez vos infos (Mdp 6 car. min)", "error");
+
+            // Construction email unique basé sur le numéro
+            const email = `${prefix}${phone.replace(/\D/g,'')}@kongo.app`;
+
+            toggleLoader(true);
+            try {
+                if(authMode === 'login') {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    if(!name) throw new Error("Nom requis");
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await updateProfile(cred.user, { displayName: name });
+                }
+                closeAuthModal();
+            } catch(e) {
+                let msg = "Erreur inconnue";
+                if(e.code === 'auth/user-not-found') msg = "Compte inexistant. Inscrivez-vous.";
+                if(e.code === 'auth/wrong-password') msg = "Mot de passe incorrect";
+                if(e.code === 'auth/email-already-in-use') msg = "Ce numéro existe déjà";
+                showToast(msg, "error");
+            }
+            toggleLoader(false);
+        };
+
+        // --- UTILS ---
+        window.switchAuthTab = (m) => {
+            authMode = m;
+            const isL = m === 'login';
+            document.getElementById('tab-login').className = `flex-1 py-2.5 text-[10px] font-bold uppercase rounded-lg transition-all ${isL?'bg-white shadow-sm':'text-slate-400'}`;
+            document.getElementById('tab-signup').className = `flex-1 py-2.5 text-[10px] font-bold uppercase rounded-lg transition-all ${!isL?'bg-white shadow-sm':'text-slate-400'}`;
+            document.getElementById('signup-fields').classList.toggle('hidden', isL);
+            document.getElementById('btn-auth-action').textContent = isL ? "Se Connecter" : "Créer Compte";
+        };
+
         window.openDetails = (id) => {
-            const ad = allAds.find(a => a.id === id);
-            if (!ad) return;
+            const ad = adsData.find(a => a.id === id);
             document.getElementById('det-img').src = ad.image;
-            document.getElementById('det-cat').textContent = ad.category;
             document.getElementById('det-title').textContent = ad.title;
-            document.getElementById('det-price').textContent = `${new Intl.NumberFormat().format(ad.price)} FCFA`;
-            document.getElementById('det-desc').textContent = ad.description;
+            document.getElementById('det-price').textContent = new Intl.NumberFormat('fr-FR').format(ad.price) + ' FCFA';
+            document.getElementById('det-cat').textContent = ad.category;
+            document.getElementById('det-desc').textContent = ad.desc;
+            document.getElementById('det-seller').textContent = ad.seller || "Vendeur";
+            document.getElementById('det-seller-initial').textContent = (ad.seller || "V")[0];
+            // Le "fullPhone" est l'identifiant email local (ex: 24206000), on l'utilise pour WhatsApp
+            document.getElementById('det-call').href = `https://wa.me/${ad.fullPhone}`; 
+            
             document.getElementById('modal-details').classList.remove('hidden');
             document.getElementById('modal-details').classList.add('flex');
         };
 
-        window.closeDetails = () => {
-            document.getElementById('modal-details').classList.add('hidden');
-            document.getElementById('modal-details').classList.remove('flex');
+        window.showToast = (msg, type='normal') => {
+            const t = document.createElement('div');
+            t.className = `toast ${type}`;
+            t.innerHTML = `<span>${msg}</span>`;
+            document.getElementById('toast-container').appendChild(t);
+            setTimeout(() => t.remove(), 3000);
         };
 
+        const toggleLoader = (show) => document.getElementById('global-loader').classList.toggle('loader-active', show);
+
+        // Exports globaux pour le HTML
+        window.openAuthModal = (m) => { switchAuthTab(m); document.getElementById('modal-auth').classList.remove('hidden'); };
+        window.closeAuthModal = () => document.getElementById('modal-auth').classList.add('hidden');
+        window.closeAddModal = () => document.getElementById('modal-post').classList.add('hidden');
+        window.closePost = window.closeAddModal;
+        window.closeDetails = () => { document.getElementById('modal-details').classList.add('hidden'); document.getElementById('modal-details').classList.remove('flex'); };
         window.handleSignOut = () => signOut(auth);
 
         init();
