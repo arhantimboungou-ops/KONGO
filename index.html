@@ -3,237 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KONGO MARKET | Premium Africa</title>
+    <title>KONGO MARKET | Plateforme Premium d'Afrique</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root { 
-            --primary: #00df82; 
-            --primary-dark: #00a862;
-            --bg-dark: #0f172a;
-            --accent: #38bdf8;
+            --primary: #10b981; 
+            --primary-hover: #059669;
+            --dark: #0f172a;
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #f1f5f9; 
+            background-color: #f8fafc; 
             color: #1e293b;
-            scroll-behavior: smooth;
         }
 
         .premium-card {
             background: white;
             border-radius: 24px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0,0,0,0.05);
-            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0,0,0,0.04);
         }
 
         .premium-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1);
-        }
-
-        .hero-gradient {
-            background: radial-gradient(circle at top right, #00df82, #064e3b);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.08);
         }
 
         .glass-nav {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .btn-premium {
-            background: var(--bg-dark);
-            color: white;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-premium:hover {
-            background: #1e293b;
-            transform: scale(1.02);
-        }
-
-        .category-pill {
-            transition: all 0.2s;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .category-pill:hover {
-            background: var(--primary);
-            color: white;
+        .tab-active {
+            background: var(--primary) !important;
+            color: white !important;
+            box-shadow: 0 8px 15px -3px rgba(16, 185, 129, 0.3);
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* Custom Checkbox/Radio */
-        .tab-active {
-            background: var(--primary) !important;
-            color: white !important;
-            box-shadow: 0 10px 15px -3px rgba(0, 223, 130, 0.3);
-        }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        .animate-fade { animation: fadeIn 0.5s ease forwards; }
+        .animate-pop { animation: fadeIn 0.3s ease-out forwards; }
+        
+        .shimmer {
+            background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Header / Nav -->
+    <!-- Navigation -->
     <nav class="sticky top-0 z-[100] glass-nav h-20">
-        <div class="container mx-auto px-4 md:px-8 h-full flex justify-between items-center">
+        <div class="container mx-auto px-4 flex justify-between items-center h-full">
             <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.reload()">
-                <div class="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-emerald-200 group-hover:rotate-12 transition-transform">
-                    <i class="fas fa-crown text-xl"></i>
+                <div class="w-11 h-11 bg-emerald-600 rounded-2xl flex items-center justify-center text-white shadow-xl group-hover:rotate-12 transition-transform">
+                    <i class="fas fa-shopping-bag text-lg"></i>
                 </div>
-                <div>
-                    <h1 class="text-2xl font-extrabold tracking-tighter leading-none text-slate-900">KONGO<span class="text-emerald-500">MARKET</span></h1>
-                    <p class="text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400">Elite Marketplace</p>
+                <div class="leading-none">
+                    <h1 class="text-xl font-extrabold tracking-tighter text-slate-900">KONGO<span class="text-emerald-500">MARKET</span></h1>
+                    <span class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Premium African Hub</span>
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
-                <div id="user-display" class="hidden flex items-center gap-3 bg-slate-100 rounded-2xl p-1.5 pr-4">
-                    <div id="user-initial" class="w-9 h-9 bg-white rounded-xl flex items-center justify-center font-bold text-emerald-600 shadow-sm">?</div>
-                    <span id="user-name" class="text-xs font-bold text-slate-700 hidden lg:inline">Mon Compte</span>
-                    <button onclick="handleSignOut()" class="text-slate-400 hover:text-red-500 transition-colors"><i class="fas fa-power-off"></i></button>
-                </div>
-
-                <div id="guest-controls" class="flex items-center gap-2">
-                    <button onclick="openAuthModal('login')" class="text-xs font-bold text-slate-600 uppercase tracking-widest px-4 hover:text-emerald-500 transition-colors">Connexion</button>
-                    <button onclick="checkAuthAndOpenAdd()" class="btn-premium px-6 py-3.5 rounded-2xl font-bold text-[11px] uppercase tracking-widest shadow-xl flex items-center gap-2">
-                        <i class="fas fa-plus"></i> Publier
+            <div class="flex items-center gap-3">
+                <!-- User UI -->
+                <div id="user-ui" class="hidden flex items-center gap-2">
+                    <button onclick="toggleMyAds()" class="p-2.5 rounded-xl bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 transition-all">
+                        <i class="fas fa-briefcase text-sm"></i>
+                    </button>
+                    <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                    <div class="flex items-center gap-2 pr-2">
+                        <div id="user-initial" class="w-9 h-9 bg-slate-900 rounded-xl flex items-center justify-center text-white text-xs font-black shadow-lg">?</div>
+                        <div class="hidden md:block">
+                            <p id="user-name" class="text-[11px] font-bold text-slate-800 leading-none">Profil</p>
+                            <p class="text-[9px] text-emerald-500 font-bold">Vendeur Vérifié</p>
+                        </div>
+                    </div>
+                    <button onclick="handleSignOut()" class="w-9 h-9 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all text-xs">
+                        <i class="fas fa-power-off"></i>
                     </button>
                 </div>
+
+                <!-- Guest UI -->
+                <div id="guest-ui" class="flex items-center gap-2">
+                    <button onclick="openAuthModal('login')" class="text-xs font-bold text-slate-600 px-4 py-2 hover:bg-slate-100 rounded-xl transition-all">Connexion</button>
+                    <button onclick="openAuthModal('signup')" class="bg-slate-900 text-white px-5 py-3 rounded-xl font-bold text-[11px] uppercase tracking-wider shadow-lg hover:bg-slate-800 transition-all">S'inscrire</button>
+                </div>
+                
+                <button onclick="checkAuthAndOpenAdd()" class="bg-emerald-500 text-white px-6 py-3 rounded-2xl font-black text-[11px] uppercase tracking-[0.1em] flex items-center gap-2 hover:bg-emerald-600 shadow-xl shadow-emerald-200 transition-all ml-2">
+                    <i class="fas fa-plus-circle text-sm"></i> <span>Déposer une annonce</span>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative pt-10 pb-20 px-4 overflow-hidden">
-        <div class="container mx-auto text-center relative z-10">
-            <span class="inline-block px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-widest mb-6 animate-fade">L'Afrique à portée de clic</span>
-            <h2 class="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight animate-fade" style="animation-delay: 0.1s">
-                Trouvez tout ce que <br><span class="text-emerald-500">vous cherchez.</span>
+    <!-- Hero / Search Section -->
+    <section class="bg-white border-b overflow-hidden relative">
+        <div class="absolute inset-0 bg-grid-slate-50 [mask-image:linear-gradient(0deg,white,transparent)] pointer-events-none"></div>
+        <div class="container mx-auto px-4 py-16 text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight">
+                Vendez tout en <span class="text-emerald-500">Afrique.</span>
             </h2>
+            <p class="text-slate-500 font-medium mb-10 max-w-xl mx-auto">La première marketplace sécurisée pour les professionnels et particuliers du continent.</p>
             
-            <!-- Barre de Recherche Premium -->
-            <div class="max-w-3xl mx-auto bg-white p-2 rounded-[2rem] shadow-2xl shadow-slate-200 flex flex-col md:flex-row gap-2 animate-fade" style="animation-delay: 0.2s">
-                <div class="flex-1 flex items-center px-6 gap-3">
-                    <i class="fas fa-search text-slate-300"></i>
-                    <input type="text" id="search-input" placeholder="Que recherchez-vous ?" class="w-full py-4 outline-none font-medium text-slate-600">
+            <div class="max-w-4xl mx-auto bg-white p-3 rounded-3xl shadow-[0_32px_64px_-15px_rgba(0,0,0,0.1)] flex flex-col md:flex-row gap-3 border border-slate-100">
+                <div class="flex-1 flex items-center px-4 gap-3 bg-slate-50 rounded-2xl border border-transparent focus-within:border-emerald-200 transition-all">
+                    <i class="fas fa-search text-slate-400"></i>
+                    <input type="text" id="search-input" oninput="filterAds()" placeholder="Ex: iPhone 15 Pro, Mercedes-Benz..." class="w-full py-4 bg-transparent outline-none font-bold text-slate-700">
                 </div>
-                <div class="h-12 w-px bg-slate-100 hidden md:block"></div>
-                <select id="country-selector" onchange="filterAds()" class="px-6 py-4 bg-transparent outline-none font-bold text-slate-700 cursor-pointer">
-                    <!-- Rempli par JS -->
+                <select id="country-selector" onchange="filterAds()" class="px-6 py-4 bg-slate-50 rounded-2xl border border-transparent outline-none font-bold text-slate-700 cursor-pointer hover:bg-slate-100 transition-all">
+                    <!-- Dinamically filled -->
                 </select>
-                <button onclick="filterAds()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-8 py-4 rounded-[1.5rem] font-bold transition-all shadow-lg shadow-emerald-100">
-                    Explorer
-                </button>
+                <button onclick="filterAds()" class="bg-emerald-500 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-100">Rechercher</button>
             </div>
 
-            <!-- Categories pills -->
-            <div class="flex overflow-x-auto gap-3 mt-10 no-scrollbar justify-start md:justify-center pb-4 px-2 animate-fade" style="animation-delay: 0.3s" id="category-pills">
-                <!-- Rempli par JS -->
+            <!-- Category Filter Bar -->
+            <div id="category-pills" class="flex overflow-x-auto gap-3 mt-12 no-scrollbar justify-start md:justify-center px-4 pb-2">
+                <!-- Dinamically filled -->
             </div>
         </div>
-        
-        <!-- Background Decor -->
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-emerald-50 rounded-full blur-3xl opacity-50"></div>
-        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-blue-50 rounded-full blur-3xl opacity-50"></div>
     </section>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 md:px-8 pb-20">
-        <div class="flex justify-between items-end mb-10">
+    <main class="container mx-auto px-4 py-12 min-h-[600px]">
+        <div id="view-title-container" class="flex justify-between items-end mb-10">
             <div>
-                <h3 class="text-2xl font-black text-slate-900">Annonces Premium</h3>
-                <p class="text-slate-400 text-sm">Les meilleures offres sélectionnées pour vous</p>
+                <h3 id="current-view-title" class="text-2xl font-black text-slate-900 uppercase tracking-tight">Annonces Récentes</h3>
+                <p id="ads-count" class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Chargement des pépites...</p>
             </div>
-            <div class="hidden md:flex gap-2">
-                <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-white transition-all"><i class="fas fa-chevron-left"></i></button>
-                <button class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-white transition-all"><i class="fas fa-chevron-right"></i></button>
+            <div id="view-actions" class="hidden">
+                <button onclick="showGlobalAds()" class="text-[10px] font-black uppercase text-emerald-600 bg-emerald-50 px-4 py-2 rounded-lg hover:bg-emerald-100 transition-all">Retour au catalogue</button>
             </div>
         </div>
 
         <div id="ads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Loader -->
-            <div class="col-span-full py-20 text-center">
-                <div class="inline-block w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
-                <p class="mt-4 text-slate-400 font-bold text-xs uppercase tracking-widest">Chargement du catalogue...</p>
+            <!-- Loading State -->
+            <div class="col-span-full py-20 flex flex-col items-center gap-4">
+                <div class="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Connexion à la base...</p>
             </div>
         </div>
     </main>
 
-    <!-- Modal Authentification -->
+    <!-- Auth Modal -->
     <div id="modal-auth" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[200] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-[450px] p-8 md:p-10 shadow-2xl relative">
-            <button onclick="closeAuthModal()" class="absolute right-8 top-8 text-slate-300 hover:text-slate-900 transition-colors"><i class="fas fa-times text-xl"></i></button>
+        <div class="bg-white rounded-[2.5rem] w-full max-w-[440px] p-10 shadow-2xl animate-pop relative">
+            <button onclick="closeAuthModal()" class="absolute right-8 top-8 w-10 h-10 rounded-full bg-slate-50 text-slate-400 hover:text-slate-900 transition-all flex items-center justify-center">
+                <i class="fas fa-times"></i>
+            </button>
             
             <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h3 id="auth-title" class="text-2xl font-black text-slate-900">BIENVENUE</h3>
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mt-1">Authentification sécurisée</p>
+                <h3 id="auth-title" class="text-2xl font-black tracking-tight mb-2">BIENVENUE</h3>
+                <p class="text-xs font-medium text-slate-400">Rejoignez la plus grande communauté de vente en Afrique.</p>
             </div>
-
+            
             <div class="flex bg-slate-100 p-1.5 rounded-2xl mb-8">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all tab-active">Connexion</button>
-                <button id="tab-signup" onclick="switchAuthTab('signup')" class="flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all text-slate-500">Rejoindre</button>
+                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all">Connexion</button>
+                <button id="tab-signup" onclick="switchAuthTab('signup')" class="flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all">Inscription</button>
             </div>
 
             <div class="space-y-4">
-                <div id="signup-name-container" class="hidden animate-fade">
-                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-4 mb-1 block">Nom complet</label>
-                    <input type="text" id="auth-name" placeholder="Ex: Marc Antoine" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none font-bold text-sm focus:border-emerald-500 transition-all">
+                <div id="signup-fields" class="hidden animate-pop">
+                    <input type="text" id="auth-name" placeholder="Votre nom complet" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold text-slate-700">
                 </div>
-
-                <div class="flex gap-2 p-1.5 bg-slate-50 rounded-2xl">
-                    <button onclick="setAuthMethod('phone')" id="btn-method-phone" class="flex-1 py-2.5 text-[10px] font-black uppercase rounded-xl transition-all bg-white shadow-sm text-emerald-600">Téléphone</button>
-                    <button onclick="setAuthMethod('email')" id="btn-method-email" class="flex-1 py-2.5 text-[10px] font-black uppercase rounded-xl transition-all text-slate-400">E-mail</button>
+                <div class="flex gap-3">
+                    <select id="auth-prefix" class="bg-slate-50 border border-slate-100 px-4 rounded-2xl font-bold text-sm outline-none focus:border-emerald-500"></select>
+                    <input type="text" id="auth-phone" placeholder="Numéro de mobile" class="flex-1 px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold text-slate-700">
                 </div>
+                <input type="password" id="auth-pass" placeholder="Mot de passe (6+ caractères)" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold text-slate-700">
                 
-                <div id="id-container" class="flex gap-3">
-                    <select id="auth-prefix" class="bg-slate-50 px-4 rounded-2xl font-bold text-sm outline-none border-2 border-transparent focus:border-emerald-500 transition-all">
-                        <!-- Rempli par JS -->
-                    </select>
-                    <input type="text" id="auth-identifier" placeholder="Votre numéro" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none font-bold text-sm focus:border-emerald-500 transition-all">
-                </div>
+                <div id="auth-error" class="hidden p-4 bg-red-50 border border-red-100 text-red-600 rounded-2xl text-[10px] font-bold text-center uppercase"></div>
 
-                <div>
-                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-4 mb-1 block">Mot de passe</label>
-                    <input type="password" id="auth-pass" placeholder="••••••••" class="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none font-bold text-sm focus:border-emerald-500 transition-all">
-                </div>
-
-                <div id="auth-error" class="hidden bg-red-50 text-red-600 p-4 rounded-2xl text-[10px] font-bold uppercase text-center border border-red-100"></div>
-
-                <button onclick="handleAuthSubmit()" id="btn-auth-action" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl hover:bg-emerald-600 transition-all text-xs mt-4">
-                    Valider le profil
+                <button onclick="handleAuthSubmit()" id="btn-auth-action" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-emerald-600 transition-all mt-6">
+                    Se Connecter
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modals (Add, View) avec Design Premium... -->
-    <!-- [Note: Logique Firebase identique à V3 mais avec UI améliorée] -->
+    <!-- Add Ad Modal -->
+    <div id="modal-add" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[200] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-[550px] p-10 shadow-2xl animate-pop relative max-h-[90vh] overflow-y-auto no-scrollbar">
+            <button onclick="closeAddModal()" class="absolute right-8 top-8 w-10 h-10 rounded-full bg-slate-50 text-slate-400 hover:text-slate-900 transition-all flex items-center justify-center">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="text-center mb-8">
+                <h3 class="text-2xl font-black tracking-tight mb-2">CRÉER UNE ANNONCE</h3>
+                <p class="text-xs font-medium text-slate-400 uppercase tracking-widest">Réussissez votre vente rapidement.</p>
+            </div>
+            
+            <div class="space-y-5">
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Titre de l'annonce</label>
+                    <input type="text" id="ad-title" placeholder="Ex: iPhone 15 Pro Max 256GB" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Prix (FCFA)</label>
+                        <input type="number" id="ad-price" placeholder="Prix net" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Catégorie</label>
+                        <select id="ad-cat" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold"></select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Pays de vente</label>
+                    <select id="ad-country" class="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold"></select>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4 mb-2 block">Image URL</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="ad-image" placeholder="Collez le lien de l'image ici" class="flex-1 px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:border-emerald-500 transition-all font-bold">
+                    </div>
+                </div>
+
+                <div id="add-error" class="hidden p-4 bg-red-50 text-red-600 rounded-2xl text-[10px] font-bold text-center uppercase"></div>
+
+                <button onclick="submitAd()" id="btn-submit-ad" class="w-full bg-emerald-500 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl shadow-emerald-100 hover:bg-emerald-600 transition-all mt-4">
+                    Publier l'annonce
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-20 mt-20">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div class="col-span-1 md:col-span-2">
+                <h1 class="text-2xl font-black tracking-tight mb-4">KONGO<span class="text-emerald-500">MARKET</span></h1>
+                <p class="text-slate-400 text-sm max-w-sm leading-relaxed">La plateforme qui connecte les acheteurs et vendeurs à travers tout le continent Africain avec sécurité et simplicité.</p>
+            </div>
+            <div>
+                <h4 class="text-xs font-black uppercase tracking-widest mb-6">Liens Utiles</h4>
+                <ul class="space-y-4 text-slate-400 text-sm font-bold">
+                    <li><a href="#" class="hover:text-emerald-500 transition-all">Comment ça marche ?</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition-all">Conseils de sécurité</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition-all">Support Client</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xs font-black uppercase tracking-widest mb-6">Pays Majeurs</h4>
+                <ul class="space-y-4 text-slate-400 text-sm font-bold">
+                    <li><a href="#" class="hover:text-emerald-500 transition-all">Cameroun</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition-all">Congo (DRC)</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition-all">Côte d'Ivoire</a></li>
+                    <li><a href="#" class="hover:text-emerald-500 transition-all">Sénégal</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 pt-12 mt-12 border-t border-slate-800 text-center">
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">© 2024 Kongo Market Premium Africa. Tous droits réservés.</p>
+        </div>
+    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, addDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, onSnapshot, addDoc, serverTimestamp, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+        // FIREBASE CONFIGURATION (Verified)
         const firebaseConfig = {
             apiKey: "AIzaSyBQ2NSk-dOMeXnGupqQJflU9r6HurSeLHQ",
             authDomain: "kongo-market-3f7ce.firebaseapp.com",
@@ -243,148 +293,222 @@
             appId: "1:95509786102:web:897c20a96e5911f75a2bd7"
         };
 
-        const CATEGORIES = [
-            { id: 'all', name: 'Tout voir', icon: 'fa-border-all' },
-            { id: 'electro', name: 'Électronique', icon: 'fa-laptop' },
-            { id: 'auto', name: 'Véhicules', icon: 'fa-car' },
-            { id: 'immo', name: 'Immobilier', icon: 'fa-home' },
-            { id: 'mode', name: 'Mode', icon: 'fa-tshirt' },
-            { id: 'job', name: 'Emplois', icon: 'fa-briefcase' }
-        ];
-
-        const ALL_COUNTRIES = [
-            { n: "Algérie", c: "213" }, { n: "Angola", c: "244" }, { n: "Bénin", c: "229" }, { n: "Botswana", c: "267" },
-            { n: "Burkina Faso", c: "226" }, { n: "Burundi", c: "257" }, { n: "Cameroun", c: "237" }, { n: "Cap-Vert", c: "238" },
-            { n: "Centrafrique", c: "236" }, { n: "Comores", c: "269" }, { n: "Congo (Brazzaville)", c: "242" }, { n: "Congo (Kinshasa)", c: "243" },
-            { n: "Côte d'Ivoire", c: "225" }, { n: "Djibouti", c: "253" }, { n: "Égypte", c: "20" }, { n: "Érythrée", c: "291" },
-            { n: "Eswatini", c: "268" }, { n: "Éthiopie", c: "251" }, { n: "Gabon", c: "241" }, { n: "Gambie", c: "220" },
-            { n: "Ghana", c: "233" }, { n: "Guinée", c: "224" }, { n: "Guinée-Bissau", c: "245" }, { n: "Guinée équatoriale", c: "240" },
-            { n: "Kenya", c: "254" }, { n: "Lesotho", c: "266" }, { n: "Libéria", c: "231" }, { n: "Libye", c: "218" },
-            { n: "Madagascar", c: "261" }, { n: "Malawi", c: "265" }, { n: "Mali", c: "223" }, { n: "Maroc", c: "212" },
-            { n: "Maurice", c: "230" }, { n: "Mauritanie", c: "222" }, { n: "Mozambique", c: "258" }, { n: "Namibie", c: "264" },
-            { n: "Niger", c: "227" }, { n: "Nigéria", c: "234" }, { n: "Ouganda", c: "256" }, { n: "Rwanda", c: "250" },
-            { n: "Sao Tomé-et-Principe", c: "239" }, { n: "Sénégal", c: "221" }, { n: "Seychelles", c: "248" }, { n: "Sierra Leone", c: "232" },
-            { n: "Somalie", c: "252" }, { n: "Soudan", c: "249" }, { n: "Soudan du Sud", c: "211" }, { n: "Tanzanie", c: "255" },
-            { n: "Tchad", c: "235" }, { n: "Togo", c: "228" }, { n: "Tunisie", c: "216" }, { n: "Zambie", c: "260" }, { n: "Zimbabwe", c: "263" }
-        ].sort((a,b) => a.n.localeCompare(b.n));
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
         let currentUser = null;
-        let selectedCategory = 'all';
+        let allAds = [];
+        let activeCategory = 'all';
+        let isMyAdsView = false;
 
-        // Initialisation UI
-        const initUI = () => {
-            // Pays
-            const countrySel = document.getElementById('country-selector');
+        const COUNTRIES = [
+            { n: "Bénin", c: "229" }, { n: "Cameroun", c: "237" }, { n: "Congo (Brazza)", c: "242" }, 
+            { n: "Congo (Kinshasa)", c: "243" }, { n: "Côte d'Ivoire", c: "225" }, { n: "Gabon", c: "241" }, 
+            { n: "Sénégal", c: "221" }, { n: "Togo", c: "228" }, { n: "Mali", c: "223" }, { n: "Guinée", c: "224" },
+            { n: "Burkina Faso", c: "226" }, { n: "Niger", c: "227" }
+        ].sort((a,b) => a.n.localeCompare(b.n));
+
+        const CATEGORIES = [
+            { id: 'all', n: 'Tous', i: 'fa-border-all' },
+            { id: 'Electronique', n: 'Électronique', i: 'fa-laptop-code' },
+            { id: 'Vehicules', n: 'Véhicules', i: 'fa-car-side' },
+            { id: 'Immobilier', n: 'Immobilier', i: 'fa-home' },
+            { id: 'Mode', n: 'Mode & Beauté', i: 'fa-tshirt' },
+            { id: 'Emploi', n: 'Emploi', i: 'fa-briefcase' }
+        ];
+
+        // Initialization
+        const init = () => {
+            // Fill Country Selectors
+            const countrySels = ['country-selector', 'ad-country'].map(id => document.getElementById(id));
             const prefixSel = document.getElementById('auth-prefix');
-            countrySel.innerHTML = `<option value="all">🌍 Toute l'Afrique</option>`;
-            ALL_COUNTRIES.forEach(p => {
-                countrySel.innerHTML += `<option value="${p.n}">${p.n}</option>`;
+            
+            countrySels[0].innerHTML = `<option value="all">🌍 Toute l'Afrique</option>`;
+            COUNTRIES.forEach(p => {
+                countrySels[0].innerHTML += `<option value="${p.n}">${p.n}</option>`;
+                countrySels[1].innerHTML += `<option value="${p.n}">${p.n}</option>`;
                 prefixSel.innerHTML += `<option value="${p.c}">${p.n} (+${p.c})</option>`;
             });
 
-            // Categories
+            // Fill Category UI
             const catContainer = document.getElementById('category-pills');
+            const adCatSel = document.getElementById('ad-cat');
             CATEGORIES.forEach(cat => {
+                if(cat.id !== 'all') adCatSel.innerHTML += `<option value="${cat.id}">${cat.n}</option>`;
                 catContainer.innerHTML += `
-                    <div onclick="selectCategory('${cat.id}')" id="pill-${cat.id}" class="category-pill bg-white px-6 py-3 rounded-2xl font-bold text-xs flex items-center gap-2 border border-slate-100 shadow-sm ${cat.id === 'all' ? 'tab-active' : ''}">
-                        <i class="fas ${cat.icon}"></i> ${cat.name}
+                    <button onclick="setCategory('${cat.id}')" id="pill-${cat.id}" class="flex-shrink-0 px-6 py-3 rounded-2xl font-bold text-xs flex items-center gap-2 border border-slate-100 bg-white transition-all ${cat.id === 'all' ? 'tab-active' : ''}">
+                        <i class="fas ${cat.i}"></i> ${cat.n}
+                    </button>
+                `;
+            });
+
+            // Listen to Auth
+            onAuthStateChanged(auth, (u) => {
+                currentUser = u;
+                document.getElementById('user-ui').classList.toggle('hidden', !u);
+                document.getElementById('guest-ui').classList.toggle('hidden', !!u);
+                if(u) {
+                    document.getElementById('user-name').textContent = u.displayName || 'Utilisateur';
+                    document.getElementById('user-initial').textContent = (u.displayName || 'U')[0].toUpperCase();
+                }
+                fetchAds();
+            });
+        };
+
+        // UI Handlers
+        window.setCategory = (id) => {
+            CATEGORIES.forEach(c => document.getElementById(`pill-${c.id}`).classList.remove('tab-active'));
+            document.getElementById(`pill-${id}`).classList.add('tab-active');
+            activeCategory = id;
+            isMyAdsView = false;
+            filterAds();
+        };
+
+        window.toggleMyAds = () => {
+            isMyAdsView = !isMyAdsView;
+            if(isMyAdsView) {
+                document.getElementById('current-view-title').textContent = "Mes Annonces";
+                document.getElementById('view-actions').classList.remove('hidden');
+            } else {
+                showGlobalAds();
+            }
+            filterAds();
+        };
+
+        window.showGlobalAds = () => {
+            isMyAdsView = false;
+            document.getElementById('current-view-title').textContent = "Annonces Récentes";
+            document.getElementById('view-actions').classList.add('hidden');
+            filterAds();
+        };
+
+        // Data Management
+        const fetchAds = () => {
+            const q = query(collection(db, 'ads'), orderBy('createdAt', 'desc'));
+            onSnapshot(q, (snap) => {
+                allAds = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                filterAds();
+            });
+        };
+
+        window.filterAds = () => {
+            const searchTxt = document.getElementById('search-input').value.toLowerCase();
+            const country = document.getElementById('country-selector').value;
+            const grid = document.getElementById('ads-grid');
+
+            let filtered = allAds.filter(ad => {
+                const matchCat = activeCategory === 'all' || ad.category === activeCategory;
+                const matchCountry = country === 'all' || ad.country === country;
+                const matchSearch = ad.title.toLowerCase().includes(searchTxt);
+                const matchUser = !isMyAdsView || ad.ownerId === currentUser?.uid;
+                return matchCat && matchCountry && matchSearch && matchUser;
+            });
+
+            document.getElementById('ads-count').textContent = `${filtered.length} annonce(s) trouvée(s)`;
+
+            grid.innerHTML = filtered.length ? "" : `
+                <div class="col-span-full py-20 text-center">
+                    <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-search text-slate-200 text-xl"></i>
+                    </div>
+                    <p class="text-xs font-black text-slate-400 uppercase tracking-widest">Aucune annonce trouvée</p>
+                </div>
+            `;
+
+            filtered.forEach(ad => {
+                grid.innerHTML += `
+                    <div class="premium-card animate-pop overflow-hidden flex flex-col group">
+                        <div class="h-56 bg-slate-100 relative overflow-hidden">
+                            <img src="${ad.image}" onerror="this.src='https://placehold.co/600x400?text=Kongo+Market'" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1.5 rounded-xl text-[8px] font-black uppercase text-emerald-600 border border-emerald-100 shadow-sm">
+                                ${ad.category}
+                            </div>
+                            <button onclick="toggleFav('${ad.id}')" class="absolute top-4 right-4 w-9 h-9 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-slate-300 hover:text-red-500 transition-all">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest">
+                                    <i class="fas fa-map-marker-alt text-emerald-500 mr-1"></i> ${ad.country}
+                                </span>
+                            </div>
+                            <h4 class="font-extrabold text-slate-900 leading-snug mb-4 line-clamp-2 h-10">${ad.title}</h4>
+                            
+                            <div class="mt-auto pt-4 border-t border-slate-50 flex justify-between items-center">
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-1">Prix Fixe</p>
+                                    <span class="text-lg font-black text-emerald-600 tracking-tighter">
+                                        ${new Intl.NumberFormat('fr-FR').format(ad.price)} <small class="text-[9px]">FCFA</small>
+                                    </span>
+                                </div>
+                                
+                                ${isMyAdsView ? `
+                                    <button onclick="deleteAd('${ad.id}')" class="w-10 h-10 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                                        <i class="fas fa-trash-alt text-sm"></i>
+                                    </button>
+                                ` : `
+                                    <a href="tel:${ad.ownerPhone}" class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center hover:bg-emerald-500 transition-all shadow-lg hover:shadow-emerald-200">
+                                        <i class="fas fa-phone-alt text-xs"></i>
+                                    </a>
+                                `}
+                            </div>
+                        </div>
                     </div>
                 `;
             });
         };
 
-        window.selectCategory = (id) => {
-            CATEGORIES.forEach(c => document.getElementById(`pill-${c.id}`).classList.remove('tab-active'));
-            document.getElementById(`pill-${id}`).classList.add('tab-active');
-            selectedCategory = id;
-            filterAds();
-        };
+        // Actions
+        window.submitAd = async () => {
+            const title = document.getElementById('ad-title').value.trim();
+            const price = document.getElementById('ad-price').value;
+            const category = document.getElementById('ad-cat').value;
+            const country = document.getElementById('ad-country').value;
+            const image = document.getElementById('ad-image').value.trim() || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30';
+            const errorEl = document.getElementById('add-error');
 
-        // Auth Logic
-        onAuthStateChanged(auth, (u) => {
-            currentUser = u;
-            document.getElementById('user-display').classList.toggle('hidden', !u);
-            document.getElementById('guest-controls').classList.toggle('hidden', !!u);
-            if(u) {
-                document.getElementById('user-name').textContent = u.displayName || 'Compte';
-                document.getElementById('user-initial').textContent = (u.displayName || 'U')[0].toUpperCase();
-            }
-            loadAds();
-        });
-
-        const loadAds = () => {
-            const q = query(collection(db, 'ads'), orderBy('createdAt', 'desc'));
-            onSnapshot(q, (snap) => {
-                const grid = document.getElementById('ads-grid');
-                grid.innerHTML = "";
-                if(snap.empty) {
-                    grid.innerHTML = `<div class="col-span-full py-20 text-center text-slate-400 font-bold uppercase text-xs tracking-widest">Aucune annonce disponible.</div>`;
-                    return;
-                }
-                snap.forEach(doc => {
-                    const ad = doc.data();
-                    grid.innerHTML += `
-                        <div class="premium-card animate-fade flex flex-col">
-                            <div class="h-56 relative overflow-hidden">
-                                <img src="${ad.image}" class="w-full h-full object-cover transform hover:scale-110 transition-transform duration-700">
-                                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl text-[9px] font-black uppercase text-emerald-600 shadow-sm">
-                                    ${ad.category}
-                                </div>
-                            </div>
-                            <div class="p-6 flex-1 flex flex-col">
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2"><i class="fas fa-map-marker-alt text-emerald-500 mr-1"></i> ${ad.country}</p>
-                                <h4 class="text-lg font-bold text-slate-900 leading-tight mb-2 truncate">${ad.title}</h4>
-                                <div class="mt-auto flex justify-between items-center">
-                                    <span class="text-xl font-black text-emerald-600 tracking-tighter">${new Intl.NumberFormat().format(ad.price)} <small class="text-[10px]">FCFA</small></span>
-                                    <button class="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center hover:bg-emerald-500 transition-colors">
-                                        <i class="fas fa-arrow-right text-xs"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            });
-        };
-
-        // Auth handlers
-        window.switchAuthTab = (tab) => {
-            const isLogin = tab === 'login';
-            document.getElementById('tab-login').className = `flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${isLogin ? 'tab-active' : 'text-slate-500'}`;
-            document.getElementById('tab-signup').className = `flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${!isLogin ? 'tab-active' : 'text-slate-500'}`;
-            document.getElementById('signup-name-container').classList.toggle('hidden', isLogin);
-            window.authMode = tab;
-        };
-
-        window.setAuthMethod = (method) => {
-            const isPhone = method === 'phone';
-            document.getElementById('btn-method-phone').className = `flex-1 py-2.5 text-[10px] font-black uppercase rounded-xl transition-all ${isPhone ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400'}`;
-            document.getElementById('btn-method-email').className = `flex-1 py-2.5 text-[10px] font-black uppercase rounded-xl transition-all ${!isPhone ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400'}`;
-            document.getElementById('auth-prefix').classList.toggle('hidden', !isPhone);
-            document.getElementById('auth-identifier').placeholder = isPhone ? "Votre numéro" : "votre@email.com";
-            window.authMethod = method;
-        };
-
-        window.handleAuthSubmit = async () => {
-            const ident = document.getElementById('auth-identifier').value.trim();
-            const pass = document.getElementById('auth-pass').value;
-            const name = document.getElementById('auth-name').value.trim();
-            const prefix = document.getElementById('auth-prefix').value;
-            const errorEl = document.getElementById('auth-error');
-
-            errorEl.classList.add('hidden');
-            if(!ident || pass.length < 6) {
-                errorEl.textContent = "Champs invalides (Mdp 6 car. min)";
+            if(!title || !price || !image) {
+                errorEl.textContent = "Tous les champs sont requis.";
                 errorEl.classList.remove('hidden');
                 return;
             }
 
-            let email = ident;
-            if(window.authMethod === 'phone') email = `${prefix}${ident.replace(/\D/g,'')}@kongomarket.africa`;
+            try {
+                await addDoc(collection(db, 'ads'), {
+                    title, price, category, country, image,
+                    ownerId: currentUser.uid,
+                    ownerName: currentUser.displayName,
+                    ownerPhone: currentUser.email.split('@')[0],
+                    createdAt: serverTimestamp()
+                });
+                closeAddModal();
+            } catch (e) {
+                alert("Erreur de publication.");
+            }
+        };
+
+        window.deleteAd = async (id) => {
+            if(confirm("Voulez-vous supprimer cette annonce ?")) {
+                await deleteDoc(doc(db, 'ads', id));
+            }
+        };
+
+        window.handleAuthSubmit = async () => {
+            const phone = document.getElementById('auth-phone').value.trim();
+            const prefix = document.getElementById('auth-prefix').value;
+            const pass = document.getElementById('auth-pass').value;
+            const name = document.getElementById('auth-name').value.trim();
+            const errorEl = document.getElementById('auth-error');
+
+            if(!phone || pass.length < 6) {
+                errorEl.textContent = "Numéro ou mot de passe invalide.";
+                errorEl.classList.remove('hidden');
+                return;
+            }
+
+            const email = `${prefix}${phone.replace(/\D/g,'')}@kongo.market`;
 
             try {
                 if(window.authMode === 'login') {
@@ -401,17 +525,23 @@
             }
         };
 
-        window.openAuthModal = (mode) => { 
-            window.authMode = mode; 
-            window.authMethod = 'phone';
-            switchAuthTab(mode); 
-            document.getElementById('modal-auth').classList.remove('hidden'); 
+        // Modal Controllers
+        window.switchAuthTab = (mode) => {
+            window.authMode = mode;
+            const isLogin = mode === 'login';
+            document.getElementById('tab-login').className = `flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${isLogin ? 'tab-active' : 'text-slate-400'}`;
+            document.getElementById('tab-signup').className = `flex-1 py-3 text-[10px] font-black uppercase rounded-xl transition-all ${!isLogin ? 'tab-active' : 'text-slate-400'}`;
+            document.getElementById('signup-fields').classList.toggle('hidden', isLogin);
+            document.getElementById('btn-auth-action').textContent = isLogin ? "Se Connecter" : "Créer mon compte";
         };
-        window.closeAuthModal = () => document.getElementById('modal-auth').classList.add('hidden');
-        window.handleSignOut = () => signOut(auth);
-        window.checkAuthAndOpenAdd = () => currentUser ? alert("Lancement publication...") : openAuthModal('signup');
 
-        initUI();
+        window.openAuthModal = (mode) => { switchAuthTab(mode); document.getElementById('modal-auth').classList.remove('hidden'); };
+        window.closeAuthModal = () => document.getElementById('modal-auth').classList.add('hidden');
+        window.checkAuthAndOpenAdd = () => currentUser ? document.getElementById('modal-add').classList.remove('hidden') : openAuthModal('signup');
+        window.closeAddModal = () => document.getElementById('modal-add').classList.add('hidden');
+        window.handleSignOut = () => signOut(auth);
+
+        init();
     </script>
 </body>
 </html>
