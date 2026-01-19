@@ -1,187 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KONGO MARKET PRO — Marketplace Africaine</title>
+<meta charset="UTF-8">
+<title>KONGO MARKET – Marketplace Africaine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #f8fafc;
-      color: #0f172a;
-    }
-    .glass {
-      background: rgba(255,255,255,.85);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(0,0,0,.05);
-    }
-    .card {
-      background: white;
-      border-radius: 24px;
-      border: 1px solid rgba(0,0,0,.04);
-      transition: all .35s ease;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 25px 45px -15px rgba(0,0,0,.15);
-    }
-  </style>
+<style>
+body { font-family:'Plus Jakarta Sans',sans-serif; background:#f8fafc }
+.card { background:white; border-radius:24px; box-shadow:0 10px 30px rgba(0,0,0,.08); transition:.3s }
+.card:hover { transform:translateY(-6px) }
+</style>
 </head>
 
 <body>
 
-<!-- Loader -->
-<div id="loader" class="fixed inset-0 bg-black/60 z-[999] hidden items-center justify-center">
-  <div class="w-14 h-14 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+<!-- NAV -->
+<nav class="bg-white shadow sticky top-0 z-50">
+<div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+<h1 class="font-black text-xl">KONGO<span class="text-emerald-600">MARKET</span></h1>
+<button onclick="openForm()" class="bg-emerald-600 text-white px-6 py-3 rounded-xl font-bold">
+<i class="fas fa-plus-circle mr-2"></i>Publier
+</button>
 </div>
-
-<!-- NAVBAR -->
-<nav class="glass sticky top-0 z-50 h-20">
-  <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-full">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-      <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-xl">
-        <i class="fas fa-bolt"></i>
-      </div>
-      <div>
-        <h1 class="font-black text-lg">KONGO<span class="text-emerald-500">MARKET</span></h1>
-        <p class="text-[9px] font-bold text-slate-400 uppercase">Africa Pro</p>
-      </div>
-    </div>
-
-    <button id="btn-add"
-      class="bg-slate-900 hover:bg-emerald-600 text-white px-6 py-3 rounded-2xl font-bold transition">
-      <i class="fas fa-plus-circle mr-2"></i> Publier
-    </button>
-  </div>
 </nav>
 
-<!-- HEADER -->
-<header class="py-16 bg-white border-b">
-  <div class="max-w-3xl mx-auto px-4 text-center">
-    <h2 class="text-4xl md:text-5xl font-black mb-6">
-      Achetez & vendez partout en Afrique
-    </h2>
-
-    <input id="search"
-      placeholder="Téléphone, voiture, maison..."
-      class="w-full px-6 py-5 rounded-3xl bg-slate-100 font-bold outline-none focus:ring-4 ring-emerald-200"/>
-  </div>
+<!-- SEARCH -->
+<header class="py-12 bg-white border-b">
+<div class="max-w-3xl mx-auto px-4">
+<input id="search" placeholder="Téléphone, voiture, maison..."
+class="w-full px-6 py-4 rounded-2xl bg-slate-100 font-bold outline-none">
+</div>
 </header>
 
 <!-- ADS -->
-<main class="max-w-7xl mx-auto px-4 py-14">
-  <div id="ads" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+<main class="max-w-7xl mx-auto px-4 py-12">
+<div id="ads" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
 </main>
 
-<!-- MODAL DETAILS -->
-<div id="modal"
-  class="fixed inset-0 bg-black/70 hidden z-[200] items-center justify-center p-4">
-  <div class="bg-white rounded-3xl max-w-4xl w-full overflow-hidden flex flex-col md:flex-row relative">
+<!-- MODAL ADD -->
+<div id="formModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+<div class="bg-white p-8 rounded-3xl w-full max-w-md">
+<h2 class="font-black text-xl mb-4">Nouvelle annonce</h2>
 
-    <button onclick="closeModal()"
-      class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full shadow flex items-center justify-center">
-      <i class="fas fa-times"></i>
-    </button>
+<input id="title" placeholder="Titre" class="w-full mb-3 px-4 py-3 bg-slate-100 rounded-xl font-bold">
+<input id="price" type="number" placeholder="Prix FCFA" class="w-full mb-3 px-4 py-3 bg-slate-100 rounded-xl font-bold">
+<input id="phone" placeholder="WhatsApp (+243...)" class="w-full mb-3 px-4 py-3 bg-slate-100 rounded-xl font-bold">
 
-    <img id="m-img" class="md:w-1/2 h-64 md:h-auto object-cover"/>
+<select id="country" class="w-full mb-3 px-4 py-3 bg-slate-100 rounded-xl font-bold">
+<option>Congo</option><option>Nigeria</option><option>Ghana</option><option>Kenya</option>
+<option>Senegal</option><option>Ivory Coast</option><option>South Africa</option>
+<option>Morocco</option><option>Egypt</option><option>Cameroon</option>
+</select>
 
-    <div class="p-8 md:p-10 flex-1">
-      <h3 id="m-title" class="text-3xl font-black mb-2"></h3>
-      <p id="m-price" class="text-2xl font-extrabold text-emerald-600 mb-4"></p>
-      <p id="m-desc" class="text-slate-600 mb-8 whitespace-pre-line"></p>
+<textarea id="desc" placeholder="Description" class="w-full mb-4 px-4 py-3 bg-slate-100 rounded-xl font-bold"></textarea>
 
-      <a id="m-contact"
-        target="_blank"
-        class="block text-center bg-emerald-600 hover:bg-emerald-700 text-white py-4 rounded-2xl font-black">
-        Contacter sur WhatsApp
-      </a>
-    </div>
-  </div>
+<button onclick="publishAd()" class="w-full bg-emerald-600 text-white py-3 rounded-xl font-black">
+Publier
+</button>
+</div>
 </div>
 
-<!-- APP -->
+<!-- MODAL DETAILS -->
+<div id="detailModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
+<div class="bg-white rounded-3xl max-w-lg w-full p-6">
+<h3 id="dTitle" class="font-black text-2xl mb-2"></h3>
+<p id="dPrice" class="text-emerald-600 font-black text-xl mb-3"></p>
+<p id="dDesc" class="mb-4 text-slate-600"></p>
+<a id="dContact" target="_blank"
+class="block bg-emerald-600 text-white text-center py-3 rounded-xl font-black">
+Contacter WhatsApp
+</a>
+</div>
+</div>
+
+<!-- FIREBASE -->
 <script type="module">
-  import { db, auth, ensureAuth } from "../src/firebase.js";
-  import { AFRICAN_COUNTRIES } from "../src/countries.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-  import {
-    collection, addDoc, onSnapshot, query, orderBy
-  } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+/* 🔥 REMPLACE PAR TES INFOS FIREBASE 🔥 */
+const firebaseConfig = {
+apiKey: "API_KEY",
+authDomain: "PROJECT.firebaseapp.com",
+projectId: "PROJECT_ID",
+storageBucket: "PROJECT.appspot.com",
+appId: "APP_ID"
+};
 
-  let ads = [];
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
-  const adsBox = document.getElementById("ads");
-  const modal = document.getElementById("modal");
+signInAnonymously(auth);
 
-  async function loadAds() {
-    const q = query(
-      collection(db, "artifacts", "kongo-market-v3", "public", "data", "ads"),
-      orderBy("createdAt", "desc")
-    );
+const adsRef = collection(db,"ads");
 
-    onSnapshot(q, snap => {
-      ads = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      render();
-    });
-  }
+let ads=[];
 
-  function render() {
-    const term = document.getElementById("search").value.toLowerCase();
-    adsBox.innerHTML = ads
-      .filter(a => a.title.toLowerCase().includes(term))
-      .map(a => `
-        <div class="card cursor-pointer" onclick='openModal(${JSON.stringify(a)})'>
-          <img src="${a.image}" class="h-48 w-full object-cover rounded-t-3xl">
-          <div class="p-5">
-            <h4 class="font-bold mb-2 line-clamp-2">${a.title}</h4>
-            <p class="text-emerald-600 font-black text-xl">
-              ${new Intl.NumberFormat().format(a.price)} FCFA
-            </p>
-            <p class="text-[10px] font-bold text-slate-400 mt-2">
-              ${a.country}
-            </p>
-          </div>
-        </div>
-      `).join("");
-  }
+onSnapshot(query(adsRef,orderBy("createdAt","desc")),snap=>{
+ads=snap.docs.map(d=>({id:d.id,...d.data()}));
+render();
+});
 
-  window.openModal = (ad) => {
-    document.getElementById("m-img").src = ad.image;
-    document.getElementById("m-title").textContent = ad.title;
-    document.getElementById("m-price").textContent =
-      new Intl.NumberFormat().format(ad.price) + " FCFA";
-    document.getElementById("m-desc").textContent = ad.description;
+window.publishAd=async()=>{
+await addDoc(adsRef,{
+title:title.value,
+price:Number(price.value),
+phone:phone.value,
+country:country.value,
+description:desc.value,
+createdAt:serverTimestamp()
+});
+closeForm();
+};
 
-    document.getElementById("m-contact").href =
-      `https://wa.me/${ad.phone.replace(/\D/g, "")}`;
+function render(){
+const s=search.value.toLowerCase();
+adsEl.innerHTML=ads.filter(a=>a.title.toLowerCase().includes(s)).map(a=>`
+<div class="card p-5 cursor-pointer" onclick='openDetail(${JSON.stringify(a)})'>
+<h4 class="font-bold mb-2">${a.title}</h4>
+<p class="text-emerald-600 font-black">${a.price} FCFA</p>
+<p class="text-xs text-slate-400">${a.country}</p>
+</div>`).join("");
+}
 
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-  };
+window.openDetail=(a)=>{
+detailModal.classList.remove("hidden");
+dTitle.textContent=a.title;
+dPrice.textContent=a.price+" FCFA";
+dDesc.textContent=a.description;
+dContact.href="https://wa.me/"+a.phone.replace(/\D/g,"");
+};
 
-  window.closeModal = () => {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  };
+window.openForm=()=>formModal.classList.remove("hidden");
+window.closeForm=()=>formModal.classList.add("hidden");
+search.oninput=render;
 
-  document.getElementById("search").oninput = render;
-
-  document.getElementById("btn-add").onclick = async () => {
-    await ensureAuth();
-    alert("Le formulaire de publication est à brancher ici (Storage OK)");
-  };
-
-  loadAds();
 </script>
 
 </body>
