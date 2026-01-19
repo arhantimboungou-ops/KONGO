@@ -3,49 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KONGO MARKET | Plateforme d'Annonces Africaine</title>
+    <title>KONGO MARKET | Design Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
         
-        :root { --primary: #10b981; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; }
-        .premium-gradient { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-        .ad-card { transition: all 0.3s ease; }
-        .ad-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .tab-active { color: var(--primary); border-bottom: 3px solid var(--primary); }
+        :root { 
+            --primary: #10b981; 
+            --primary-dark: #059669;
+            --soft-bg: #fdfdfd;
+        }
+
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: var(--soft-bg); 
+            color: #1e293b; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        .premium-gradient { 
+            background: linear-gradient(135deg, #10b981 0%, #064e3b 100%); 
+        }
+
+        /* Amélioration des cartes */
+        .ad-card { 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .ad-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .tab-active { 
+            color: var(--primary); 
+            position: relative;
+        }
+        .tab-active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Boutons stylisés */
+        .btn-fancy {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-fancy::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        .btn-fancy:hover::before { left: 100%; }
+
+        input, select, textarea { 
+            transition: all 0.2s ease;
+        }
+        input:focus, select:focus, textarea:focus {
+            background: white !important;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
-    <!-- Top Bar -->
-    <div class="bg-emerald-600 text-white text-[10px] py-2 text-center font-bold uppercase tracking-widest px-4">
-        Le marché n°1 pour publier vos annonces gratuitement en Afrique
+    <!-- Bannière Slim -->
+    <div class="premium-gradient text-white text-[9px] py-1.5 text-center font-medium tracking-[0.2em] px-4">
+        BIENVENUE SUR LA RÉFÉRENCE DU COMMERCE EN AFRIQUE
     </div>
 
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-[60] bg-white/90 backdrop-blur-md border-b border-slate-100">
-        <div class="container mx-auto px-4 md:px-6 h-16 flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
-                <div class="w-9 h-9 premium-gradient rounded-lg flex items-center justify-center text-white shadow-md">
-                    <i class="fas fa-bullhorn"></i>
+    <!-- Barre de Navigation Glass -->
+    <nav class="sticky top-0 z-[60] glass border-b border-slate-100/50 shadow-sm">
+        <div class="container mx-auto px-4 md:px-8 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="window.location.reload()">
+                <div class="w-11 h-11 premium-gradient rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:rotate-6 transition-transform">
+                    <i class="fas fa-shopping-bag text-lg"></i>
                 </div>
-                <h1 class="text-lg font-black tracking-tighter uppercase">KONGO<span class="text-emerald-600">MARKET</span></h1>
+                <div class="flex flex-col">
+                    <h1 class="text-xl font-extrabold tracking-tight leading-none uppercase">Kongo<span class="text-emerald-500">Market</span></h1>
+                    <span class="text-[9px] font-bold text-slate-400 tracking-widest uppercase">L'excellence locale</span>
+                </div>
             </div>
 
-            <div class="flex items-center gap-4">
-                <div id="user-display" class="hidden flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full pl-2 pr-3 py-1">
-                    <div class="w-6 h-6 premium-gradient text-white rounded-full flex items-center justify-center text-[9px] font-black" id="user-initial">?</div>
-                    <span id="user-name" class="text-[11px] font-bold text-slate-800 hidden sm:inline">Utilisateur</span>
-                    <button onclick="handleSignOut()" class="text-slate-300 hover:text-red-500 ml-2"><i class="fas fa-power-off text-[10px]"></i></button>
+            <div class="flex items-center gap-6">
+                <div id="user-display" class="hidden flex items-center gap-3 bg-white border border-slate-100 rounded-2xl p-1.5 pr-4 shadow-sm">
+                    <div class="w-8 h-8 premium-gradient text-white rounded-xl flex items-center justify-center text-xs font-bold shadow-inner" id="user-initial">?</div>
+                    <span id="user-name" class="text-xs font-bold text-slate-700 hidden sm:inline">Utilisateur</span>
+                    <button onclick="handleSignOut()" class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-300 hover:text-red-500 hover:bg-red-50 transition-all"><i class="fas fa-power-off text-xs"></i></button>
                 </div>
 
-                <div id="guest-controls" class="flex items-center gap-3">
-                    <button onclick="openAuthModal('login')" class="text-xs font-bold text-slate-600">Connexion</button>
-                    <button onclick="checkAuthAndOpenAdd()" class="premium-gradient text-white px-4 py-2.5 rounded-xl font-bold text-[11px] shadow-lg flex items-center gap-2 uppercase tracking-wide">
-                        <i class="fas fa-plus-circle text-xs"></i>
+                <div id="guest-controls" class="flex items-center gap-4">
+                    <button onclick="openAuthModal('login')" class="text-xs font-bold text-slate-500 hover:text-emerald-600 transition-colors uppercase tracking-wider">Connexion</button>
+                    <button onclick="checkAuthAndOpenAdd()" class="premium-gradient text-white px-6 py-3 rounded-2xl font-bold text-xs shadow-xl flex items-center gap-2 uppercase tracking-widest btn-fancy hover:shadow-emerald-200 transition-all active:scale-95">
+                        <i class="fas fa-plus"></i>
                         <span>Vendre</span>
                     </button>
                 </div>
@@ -53,161 +125,179 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="bg-white py-12 border-b border-slate-50">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-3xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">Le commerce en Afrique, <span class="text-emerald-600">réinventé</span>.</h2>
-            
-            <div class="max-w-5xl mx-auto">
-                <div class="bg-white p-2 rounded-2xl shadow-2xl border border-slate-100 flex flex-col lg:flex-row gap-2">
-                    <div class="flex-1 relative">
-                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                        <input type="text" id="search-input" placeholder="Que recherchez-vous ?" class="w-full pl-10 pr-4 py-4 bg-slate-50 rounded-xl outline-none font-medium text-sm border-2 border-transparent focus:border-emerald-500 transition-all">
-                    </div>
-                    <select id="category-filter" class="w-full lg:w-48 px-4 py-4 bg-slate-50 rounded-xl outline-none font-bold text-sm appearance-none cursor-pointer border-2 border-transparent focus:border-emerald-500"></select>
-                    <select id="country-selector" class="w-full lg:w-48 px-4 py-4 bg-slate-50 rounded-xl outline-none font-bold text-sm appearance-none cursor-pointer border-2 border-transparent focus:border-emerald-500"></select>
-                    <button onclick="filterAds()" class="bg-slate-900 text-white px-8 py-4 rounded-xl font-black uppercase text-xs tracking-widest hover:bg-emerald-600 transition-all active:scale-95 shadow-lg">Rechercher</button>
-                </div>
-            </div>
+    <!-- En-tête de section -->
+    <header class="container mx-auto px-4 pt-12 pb-6">
+        <div class="max-w-2xl">
+            <h2 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-4 uppercase">Le marché du <span class="text-emerald-500">futur</span>.</h2>
+            <p class="text-slate-500 text-sm font-medium max-w-md leading-relaxed">Découvrez des milliers d'articles vérifiés par notre communauté. Simple, rapide et sécurisé.</p>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-10">
-        <div id="ads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Skeleton Loading -->
-            <div class="animate-pulse bg-slate-100 rounded-3xl h-72"></div>
-            <div class="animate-pulse bg-slate-100 rounded-3xl h-72"></div>
-            <div class="animate-pulse bg-slate-100 rounded-3xl h-72"></div>
-            <div class="animate-pulse bg-slate-100 rounded-3xl h-72"></div>
+    <!-- Filtres & Grille -->
+    <main class="container mx-auto px-4 pb-20">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-10 bg-white p-4 rounded-3xl border border-slate-100 shadow-sm">
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <i class="fas fa-filter text-emerald-500 ml-2"></i>
+                <span class="text-[10px] font-black uppercase text-slate-400 mr-4">Filtrer par</span>
+            </div>
+            <div class="flex flex-wrap gap-3 w-full md:w-auto">
+                <select id="category-filter" onchange="filterAds()" class="flex-1 md:flex-none px-5 py-3 bg-slate-50 border-none rounded-2xl text-[11px] font-bold uppercase outline-none focus:ring-2 ring-emerald-100"></select>
+                <select id="country-selector" onchange="filterAds()" class="flex-1 md:flex-none px-5 py-3 bg-slate-50 border-none rounded-2xl text-[11px] font-bold uppercase outline-none focus:ring-2 ring-emerald-100"></select>
+            </div>
+        </div>
+        
+        <div id="ads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="col-span-full py-24 text-center">
+                <div class="inline-block p-4 rounded-full bg-emerald-50 mb-4">
+                    <i class="fas fa-circle-notch fa-spin text-emerald-500 text-2xl"></i>
+                </div>
+                <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em]">Synchronisation avec le marché...</p>
+            </div>
         </div>
     </main>
 
-    <!-- Modal Auth (Multi-Mode) -->
-    <div id="modal-auth" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-[420px] p-8 shadow-2xl relative overflow-hidden">
-            <button onclick="closeAuthModal()" class="absolute right-6 top-6 text-slate-400 hover:text-slate-900"><i class="fas fa-times"></i></button>
+    <!-- Modal Authentification Style Apple -->
+    <div id="modal-auth" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] w-full max-w-[440px] p-10 shadow-2xl relative transform transition-all scale-100">
+            <button onclick="closeAuthModal()" class="absolute right-8 top-8 w-10 h-10 flex items-center justify-center rounded-full bg-slate-50 text-slate-400 hover:text-slate-900 transition-all"><i class="fas fa-times"></i></button>
             
-            <div class="flex gap-8 mb-8 border-b border-slate-100 justify-center">
-                <button id="tab-login" onclick="switchAuthTab('login')" class="pb-3 text-xs font-black uppercase tracking-widest tab-active">Connexion</button>
-                <button id="tab-signup" onclick="switchAuthTab('signup')" class="pb-3 text-xs font-black uppercase tracking-widest text-slate-300">Inscription</button>
+            <div class="text-center mb-10">
+                <div class="w-16 h-16 premium-gradient rounded-[1.5rem] flex items-center justify-center text-white shadow-xl mx-auto mb-4">
+                    <i class="fas fa-user-shield text-2xl"></i>
+                </div>
+                <h3 id="auth-title" class="text-2xl font-black text-slate-900 tracking-tight">Espace Membre</h3>
+                <p class="text-slate-400 text-xs font-medium mt-1">Connectez-vous pour gérer vos annonces</p>
+            </div>
+
+            <div class="flex bg-slate-50 p-1.5 rounded-2xl mb-8">
+                <button id="tab-login" onclick="switchAuthTab('login')" class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all tab-active bg-white shadow-sm">Connexion</button>
+                <button id="tab-signup" onclick="switchAuthTab('signup')" class="flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all text-slate-400">Créer un compte</button>
             </div>
 
             <div class="space-y-4">
                 <div id="signup-name-container" class="hidden">
-                    <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Nom Complet</label>
-                    <input type="text" id="auth-name" placeholder="Prénom Nom" class="w-full px-4 py-3.5 bg-slate-50 rounded-xl outline-none font-bold border-2 border-transparent focus:border-emerald-500 text-sm">
+                    <input type="text" id="auth-name" placeholder="Votre nom complet" class="w-full px-6 py-4 bg-slate-50 rounded-2xl outline-none font-bold border-2 border-transparent focus:border-emerald-500/30 text-sm">
                 </div>
 
-                <div>
-                    <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Méthode d'accès</label>
-                    <div class="flex gap-2 mb-3 mt-1">
-                        <button onclick="setAuthMethod('phone')" id="btn-method-phone" class="flex-1 py-2 text-[9px] font-black uppercase rounded-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-600">Par Numéro</button>
-                        <button onclick="setAuthMethod('email')" id="btn-method-email" class="flex-1 py-2 text-[9px] font-black uppercase rounded-lg border-2 border-slate-100 text-slate-400">Par Email</button>
-                    </div>
-                    
-                    <div class="flex gap-2" id="id-container">
-                        <select id="auth-prefix" class="bg-slate-50 px-3 rounded-xl font-bold border-2 border-transparent text-xs outline-none">
-                            <option value="242">+242</option><option value="243">+243</option><option value="237">+237</option><option value="225">+225</option><option value="221">+221</option>
-                        </select>
-                        <input type="text" id="auth-identifier" placeholder="Numéro de mobile" class="w-full px-4 py-3.5 bg-slate-50 rounded-xl outline-none font-bold border-2 border-transparent focus:border-emerald-500 text-sm">
-                    </div>
+                <div class="flex gap-2 mb-2 p-1 bg-slate-100 rounded-xl">
+                    <button onclick="setAuthMethod('phone')" id="btn-method-phone" class="flex-1 py-2 text-[9px] font-black uppercase rounded-lg bg-white text-emerald-600 shadow-sm transition-all">Téléphone</button>
+                    <button onclick="setAuthMethod('email')" id="btn-method-email" class="flex-1 py-2 text-[9px] font-black uppercase rounded-lg text-slate-400 transition-all">E-mail</button>
+                </div>
+                
+                <div class="flex gap-2" id="id-container">
+                    <select id="auth-prefix" class="bg-slate-50 px-4 rounded-2xl font-bold border-2 border-transparent text-xs outline-none focus:border-emerald-500/30">
+                        <option value="242">CG</option><option value="243">CD</option><option value="237">CM</option><option value="225">CI</option><option value="221">SN</option>
+                    </select>
+                    <input type="text" id="auth-identifier" placeholder="Numéro sans indicatif" class="w-full px-6 py-4 bg-slate-50 rounded-2xl outline-none font-bold border-2 border-transparent focus:border-emerald-500/30 text-sm">
                 </div>
 
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Mot de passe</label>
-                        <button onclick="handleForgotPassword()" id="btn-forgot" class="text-[9px] font-bold text-emerald-600 uppercase hover:underline">Oublié ?</button>
-                    </div>
-                    <input type="password" id="auth-pass" placeholder="Minimum 6 caractères" class="w-full px-4 py-3.5 bg-slate-50 rounded-xl outline-none font-bold border-2 border-transparent focus:border-emerald-500 text-sm">
-                </div>
+                <input type="password" id="auth-pass" placeholder="Mot de passe (6+ car.)" class="w-full px-6 py-4 bg-slate-50 rounded-2xl outline-none font-bold border-2 border-transparent focus:border-emerald-500/30 text-sm">
 
-                <button onclick="handleAuthSubmit()" id="btn-auth-action" class="w-full premium-gradient text-white py-4 rounded-xl font-black uppercase tracking-widest mt-4 shadow-xl hover:opacity-90 transition-all active:scale-95">
-                    Continuer
+                <div id="auth-error" class="hidden bg-rose-50 text-rose-500 p-4 rounded-2xl text-[10px] font-bold uppercase text-center border border-rose-100 animate-pulse"></div>
+
+                <button onclick="handleAuthSubmit()" id="btn-auth-action" class="w-full premium-gradient text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl hover:shadow-emerald-100 transition-all active:scale-95 text-xs">
+                    Confirmer
                 </button>
+                <button onclick="handleForgotPassword()" id="btn-forgot" class="w-full text-[10px] font-bold text-slate-400 uppercase hover:text-emerald-600 mt-2">Mot de passe oublié ?</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Publish -->
-    <div id="modal-add" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[2.5rem] w-full max-w-[600px] p-8 shadow-3xl overflow-y-auto max-h-[90vh] no-scrollbar">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-xl font-black text-slate-900 uppercase tracking-tighter">Poster une annonce</h2>
-                <button onclick="closeAddModal()" class="text-slate-400 hover:text-red-500"><i class="fas fa-times"></i></button>
+    <!-- Modal Publication Style Formulaire Pro -->
+    <div id="modal-add" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[3rem] w-full max-w-[640px] p-10 shadow-3xl overflow-y-auto max-h-[90vh] no-scrollbar">
+            <div class="flex justify-between items-center mb-10">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tighter">Nouvelle Annonce</h2>
+                    <p class="text-xs font-medium text-slate-400">Remplissez les détails de votre article</p>
+                </div>
+                <button onclick="closeAddModal()" class="w-12 h-12 rounded-2xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all"><i class="fas fa-times"></i></button>
             </div>
-            
-            <div class="space-y-5">
-                <!-- Image Upload -->
-                <div class="relative cursor-pointer group h-48" onclick="document.getElementById('ad-image-file').click()">
+
+            <div class="space-y-6">
+                <!-- Zone Photo -->
+                <div class="relative cursor-pointer group h-56" onclick="document.getElementById('ad-image-file').click()">
                     <input type="file" id="ad-image-file" class="hidden" accept="image/*" onchange="processAdImage(this)">
-                    <div id="preview-box" class="hidden absolute inset-0 z-10"><img id="img-preview-src" src="" class="w-full h-full object-cover rounded-2xl"></div>
-                    <div class="border-2 border-dashed border-slate-200 rounded-2xl h-full flex flex-col items-center justify-center bg-slate-50 group-hover:border-emerald-400 transition-colors">
-                        <i class="fas fa-image text-3xl text-emerald-500 mb-2"></i>
-                        <p class="text-[10px] font-black text-slate-400 uppercase">Ajouter une photo</p>
+                    <div id="preview-box" class="hidden absolute inset-0 z-10"><img id="img-preview-src" src="" class="w-full h-full object-cover rounded-[2.5rem] shadow-lg"></div>
+                    <div class="border-2 border-dashed border-slate-200 rounded-[2.5rem] h-full flex flex-col items-center justify-center bg-slate-50 group-hover:bg-emerald-50/30 group-hover:border-emerald-200 transition-all">
+                        <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-camera text-2xl text-emerald-500"></i>
+                        </div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ajouter une photo haute qualité</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="ad-title" placeholder="Titre de l'annonce" class="px-4 py-3.5 bg-slate-50 rounded-xl font-bold outline-none text-sm border-2 border-transparent focus:border-emerald-500">
-                    <input type="number" id="ad-price" placeholder="Prix (FCFA)" class="px-4 py-3.5 bg-slate-50 rounded-xl font-bold outline-none text-sm border-2 border-transparent focus:border-emerald-500">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Titre</label>
+                        <input type="text" id="ad-title" placeholder="Ex: iPhone 15 Pro Max" class="w-full px-6 py-4 bg-slate-50 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500/30 text-sm">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Prix (FCFA)</label>
+                        <input type="number" id="ad-price" placeholder="Prix final" class="w-full px-6 py-4 bg-slate-50 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500/30 text-sm text-emerald-600">
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <select id="ad-category" class="px-4 py-3.5 bg-slate-50 rounded-xl font-bold outline-none text-sm border-2 border-transparent focus:border-emerald-500"></select>
-                    <select id="ad-country" class="px-4 py-3.5 bg-slate-50 rounded-xl font-bold outline-none text-sm border-2 border-transparent focus:border-emerald-500"></select>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Catégorie</label>
+                        <select id="ad-category" class="w-full px-6 py-4 bg-slate-50 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500/30 text-sm"></select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Localisation</label>
+                        <select id="ad-country" class="w-full px-6 py-4 bg-slate-50 rounded-2xl font-bold outline-none border-2 border-transparent focus:border-emerald-500/30 text-sm"></select>
+                    </div>
                 </div>
 
-                <div>
+                <div class="space-y-2">
                     <label class="text-[10px] font-black uppercase text-slate-400 ml-1">WhatsApp de contact</label>
-                    <div class="flex gap-2 mt-1">
-                        <select id="ad-wa-prefix" class="bg-slate-50 px-3 rounded-xl font-bold text-xs outline-none border-2 border-transparent">
-                            <option value="242">+242</option><option value="243">+243</option><option value="237">+237</option>
-                        </select>
-                        <input type="tel" id="ad-whatsapp" placeholder="Ex: 06 123 45 67" class="w-full px-4 py-3.5 bg-emerald-50 rounded-xl font-bold text-emerald-800 outline-none text-sm border-2 border-transparent focus:border-emerald-500">
-                    </div>
+                    <input type="tel" id="ad-whatsapp" placeholder="Ex: +242 06 000 00 00" class="w-full px-6 py-4 bg-emerald-50/50 rounded-2xl font-bold text-emerald-800 outline-none border-2 border-transparent focus:border-emerald-500/30 text-sm">
                 </div>
 
-                <textarea id="ad-desc" placeholder="Détails sur l'article, état, livraison..." class="w-full px-4 py-3.5 bg-slate-50 rounded-xl font-bold h-28 resize-none outline-none text-sm border-2 border-transparent focus:border-emerald-500"></textarea>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase text-slate-400 ml-1">Description</label>
+                    <textarea id="ad-desc" placeholder="Décrivez l'état de l'objet, ses caractéristiques..." class="w-full px-6 py-4 bg-slate-50 rounded-2xl font-bold h-32 resize-none outline-none border-2 border-transparent focus:border-emerald-500/30 text-sm"></textarea>
+                </div>
 
-                <button onclick="submitNewAd()" id="btn-publish-final" class="w-full premium-gradient text-white py-4 rounded-xl font-black uppercase shadow-xl hover:opacity-95 transition-all active:scale-95 tracking-widest mt-4">
-                    Publier maintenant
-                </button>
+                <button onclick="submitNewAd()" id="btn-publish-final" class="w-full premium-gradient text-white py-5 rounded-2xl font-black uppercase shadow-2xl tracking-[0.3em] text-xs hover:shadow-emerald-200 transition-all active:scale-95">Publier maintenant</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal View Ad -->
-    <div id="modal-view" class="fixed inset-0 bg-slate-900/90 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-[3rem] w-full max-w-5xl overflow-hidden shadow-2xl relative flex flex-col md:row h-[90vh] md:h-[600px]">
-            <button onclick="closeViewModal()" class="absolute top-6 right-6 z-20 bg-white/20 hover:bg-white/40 text-white w-10 h-10 rounded-full flex items-center justify-center transition-all"><i class="fas fa-times"></i></button>
+    <!-- Modal Vue Annonce - Full Screen Experience -->
+    <div id="modal-view" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[100] hidden flex items-center justify-center p-0 md:p-10">
+        <div class="bg-white rounded-none md:rounded-[3.5rem] w-full max-w-6xl overflow-hidden shadow-2xl relative flex flex-col md:flex-row h-full md:h-[700px]">
+            <button onclick="closeViewModal()" class="absolute top-8 right-8 z-20 bg-black/40 text-white w-12 h-12 rounded-2xl flex items-center justify-center hover:bg-black/60 backdrop-blur-md transition-all"><i class="fas fa-times"></i></button>
             
-            <div class="w-full md:w-1/2 h-64 md:h-full bg-slate-100">
+            <div class="w-full md:w-[60%] h-[40vh] md:h-full bg-slate-100">
                 <img id="view-img" src="" class="w-full h-full object-cover">
             </div>
-            
-            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-between overflow-y-auto no-scrollbar">
+
+            <div class="w-full md:w-[40%] p-8 md:p-14 flex flex-col justify-between overflow-y-auto no-scrollbar bg-white">
                 <div>
-                    <div class="flex gap-2 items-center mb-4">
-                        <span id="view-cat" class="text-[9px] font-black uppercase bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full"></span>
-                        <span id="view-loc" class="text-[9px] font-black uppercase bg-slate-100 text-slate-500 px-3 py-1 rounded-full"></span>
+                    <div class="flex gap-3 items-center mb-6">
+                        <span id="view-cat" class="text-[10px] font-black uppercase bg-emerald-100 text-emerald-700 px-4 py-1.5 rounded-xl"></span>
+                        <span id="view-loc" class="text-[10px] font-black uppercase bg-slate-100 text-slate-500 px-4 py-1.5 rounded-xl"></span>
                     </div>
-                    <h2 id="view-title" class="text-3xl font-black text-slate-900 leading-tight mb-2"></h2>
-                    <p id="view-price" class="text-2xl font-black text-emerald-600 mb-6"></p>
-                    <div class="h-px bg-slate-100 w-full mb-6"></div>
-                    <p id="view-desc" class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap"></p>
+                    <h2 id="view-title" class="text-4xl font-extrabold text-slate-900 leading-tight mb-3 tracking-tight"></h2>
+                    <p id="view-price" class="text-3xl font-black text-emerald-600 mb-8 tracking-tighter"></p>
+                    
+                    <div class="h-0.5 w-12 bg-slate-100 mb-8"></div>
+                    
+                    <p class="text-[10px] font-black uppercase text-slate-300 mb-2 tracking-widest">Détails de l'annonce</p>
+                    <p id="view-desc" class="text-slate-500 text-sm leading-relaxed whitespace-pre-wrap font-medium"></p>
                 </div>
 
-                <div class="mt-8 pt-8 border-t border-slate-50">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-10 h-10 premium-gradient rounded-full flex items-center justify-center text-white font-bold" id="view-seller-init">V</div>
+                <div class="mt-12 pt-8 border-t border-slate-50">
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 rounded-2xl premium-gradient flex items-center justify-center text-white text-sm font-bold shadow-lg" id="view-seller-initial">?</div>
                         <div>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Vendu par</p>
-                            <p id="view-seller" class="text-sm font-bold text-slate-900"></p>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Propriétaire</p>
+                            <p id="view-seller" class="text-sm font-bold text-slate-800"></p>
                         </div>
                     </div>
-                    <a id="btn-wa-link" href="#" target="_blank" class="w-full bg-[#25D366] text-white py-4 rounded-2xl font-black flex items-center justify-center gap-3 uppercase tracking-widest text-xs shadow-xl hover:scale-[1.02] transition-all">
-                        <i class="fab fa-whatsapp text-xl"></i> Écrire au vendeur
+                    <a id="btn-wa-link" href="#" target="_blank" class="w-full bg-[#25D366] text-white py-5 rounded-3xl font-black flex items-center justify-center gap-4 uppercase tracking-[0.2em] text-[10px] shadow-2xl shadow-green-200 hover:scale-[1.02] active:scale-95 transition-all">
+                        <i class="fab fa-whatsapp text-2xl"></i> Ouvrir WhatsApp
                     </a>
                 </div>
             </div>
@@ -219,7 +309,6 @@
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // CONFIGURATION FIREBASE
         const firebaseConfig = {
             apiKey: "AIzaSyBQ2NSk-dOMeXnGupqQJflU9r6HurSeLHQ",
             authDomain: "kongo-market-3f7ce.firebaseapp.com",
@@ -229,30 +318,26 @@
             appId: "1:95509786102:web:897c20a96e5911f75a2bd7"
         };
 
-        const CATEGORIES = ["Immobilier", "Automobile", "Électronique", "Mode & Beauté", "Maison & Jardin", "Emploi & Services", "Loisirs", "Autres"];
-        const COUNTRIES = ["Algérie", "Angola", "Bénin", "Burkina Faso", "Burundi", "Cameroun", "Cap-Vert", "Congo (Brazzaville)", "Congo (Kinshasa)", "Côte d'Ivoire", "Djibouti", "Égypte", "Éthiopie", "Gabon", "Ghana", "Guinée", "Kenya", "Madagascar", "Mali", "Maroc", "Maurice", "Mauritanie", "Niger", "Nigeria", "Rwanda", "Sénégal", "Tchad", "Togo", "Tunisie"].sort();
+        const CATEGORIES = ["💻 Électronique", "🚗 Automobile", "🏠 Immobilier", "👗 Mode & Beauté", "🛋️ Maison", "🛠️ Services", "📦 Autres"];
+        const COUNTRIES = ["🇨🇬 Congo (Brazza)", "🇨🇩 Congo (Kin)", "🇨🇲 Cameroun", "🇨🇮 Côte d'Ivoire", "🇬🇦 Gabon", "🇸🇳 Sénégal", "🇲🇱 Mali", "🇹🇬 Togo"].sort();
 
         let app, auth, db, user;
-        let authMode = 'login';
-        let authMethod = 'phone';
-        let base64Photo = "";
-        let adsData = [];
+        let authMode = 'login', authMethod = 'phone', base64Photo = "", adsData = [];
 
         const start = () => {
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
 
-            // Populate Dropdowns
-            const populate = (id, list, firstLabel) => {
+            const populate = (id, list, first) => {
                 const el = document.getElementById(id);
-                if(firstLabel) el.add(new Option(firstLabel, ""));
+                if(first) el.add(new Option(first, ""));
                 list.forEach(item => el.add(new Option(item, item)));
             };
 
-            populate('category-filter', CATEGORIES, "Toutes catégories");
+            populate('category-filter', CATEGORIES, "🔍 Toutes Catégories");
             populate('ad-category', CATEGORIES);
-            populate('country-selector', COUNTRIES, "Toute l'Afrique");
+            populate('country-selector', COUNTRIES, "🌍 Tous les Pays");
             populate('ad-country', COUNTRIES);
 
             onAuthStateChanged(auth, (u) => {
@@ -260,45 +345,49 @@
                 document.getElementById('user-display').classList.toggle('hidden', !u);
                 document.getElementById('guest-controls').classList.toggle('hidden', !!u);
                 if(u) {
-                    document.getElementById('user-name').textContent = u.displayName || 'Compte';
+                    document.getElementById('user-name').textContent = u.displayName || 'Mon Profil';
                     document.getElementById('user-initial').textContent = (u.displayName || 'U')[0].toUpperCase();
                 }
                 loadContent();
             });
         };
 
-        // AUTH LOGIC
         window.switchAuthTab = (tab) => {
             authMode = tab;
-            document.getElementById('tab-login').className = `pb-3 text-xs font-black uppercase tracking-widest ${tab==='login'?'tab-active':'text-slate-300'}`;
-            document.getElementById('tab-signup').className = `pb-3 text-xs font-black uppercase tracking-widest ${tab==='signup'?'tab-active':'text-slate-300'}`;
-            document.getElementById('signup-name-container').classList.toggle('hidden', tab==='login');
+            const isLogin = tab === 'login';
+            document.getElementById('tab-login').className = `flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${isLogin ? 'tab-active bg-white shadow-sm' : 'text-slate-400'}`;
+            document.getElementById('tab-signup').className = `flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${!isLogin ? 'tab-active bg-white shadow-sm' : 'text-slate-400'}`;
+            document.getElementById('signup-name-container').classList.toggle('hidden', isLogin);
+            document.getElementById('auth-error').classList.add('hidden');
         };
 
         window.setAuthMethod = (method) => {
             authMethod = method;
             const isPhone = method === 'phone';
-            document.getElementById('btn-method-phone').className = isPhone ? "flex-1 py-2 text-[9px] font-black uppercase rounded-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-600" : "flex-1 py-2 text-[9px] font-black uppercase rounded-lg border-2 border-slate-100 text-slate-400";
-            document.getElementById('btn-method-email').className = !isPhone ? "flex-1 py-2 text-[9px] font-black uppercase rounded-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-600" : "flex-1 py-2 text-[9px] font-black uppercase rounded-lg border-2 border-slate-100 text-slate-400";
+            document.getElementById('btn-method-phone').className = isPhone ? "flex-1 py-2 text-[9px] font-black uppercase rounded-lg bg-white text-emerald-600 shadow-sm transition-all" : "flex-1 py-2 text-[9px] font-black uppercase rounded-lg text-slate-400";
+            document.getElementById('btn-method-email').className = !isPhone ? "flex-1 py-2 text-[9px] font-black uppercase rounded-lg bg-white text-emerald-600 shadow-sm transition-all" : "flex-1 py-2 text-[9px] font-black uppercase rounded-lg text-slate-400";
             document.getElementById('auth-prefix').classList.toggle('hidden', !isPhone);
-            document.getElementById('auth-identifier').placeholder = isPhone ? "Numéro de mobile" : "Adresse e-mail";
+            document.getElementById('auth-identifier').placeholder = isPhone ? "Ex: 06 600 00 00" : "Votre e-mail";
         };
 
         window.handleAuthSubmit = async () => {
             const ident = document.getElementById('auth-identifier').value.trim();
             const pass = document.getElementById('auth-pass').value;
-            const name = document.getElementById('auth-name').value;
+            const name = document.getElementById('auth-name').value.trim();
             const prefix = document.getElementById('auth-prefix').value;
-
-            if(!ident || !pass || (authMode === 'signup' && !name)) return alert("Merci de remplir tous les champs.");
+            const errorEl = document.getElementById('auth-error');
+            
+            errorEl.classList.add('hidden');
 
             let email = ident;
-            if(authMethod === 'phone' || !ident.includes('@')) {
-                email = `${prefix}${ident.replace(/\D/g,'')}@kongo-market.com`;
+            if(authMethod === 'phone') {
+                const cleaned = ident.replace(/\D/g,'');
+                if(cleaned.length < 6) { errorEl.textContent = "Numéro invalide."; errorEl.classList.remove('hidden'); return; }
+                email = `${prefix}${cleaned}@kongomarket.africa`;
             }
 
             const btn = document.getElementById('btn-auth-action');
-            btn.disabled = true; btn.textContent = "Un instant...";
+            btn.disabled = true; btn.textContent = "...";
 
             try {
                 if(authMode === 'login') {
@@ -309,47 +398,35 @@
                 }
                 closeAuthModal();
             } catch (err) {
-                alert("Erreur: " + (err.code === 'auth/wrong-password' ? "Mot de passe erroné." : "Vérifiez vos accès."));
-            } finally {
-                btn.disabled = false; btn.textContent = "Continuer";
-            }
+                errorEl.classList.remove('hidden');
+                errorEl.textContent = "Erreur d'authentification.";
+            } finally { btn.disabled = false; btn.textContent = "Confirmer"; }
         };
 
-        window.handleForgotPassword = async () => {
-            const email = document.getElementById('auth-identifier').value.trim();
-            if(!email || !email.includes('@')) return alert("Saisissez votre e-mail pour recevoir un lien de réinitialisation.");
-            
-            try {
-                await sendPasswordResetEmail(auth, email);
-                alert("Lien envoyé ! Consultez vos e-mails.");
-            } catch (e) { alert("Erreur lors de l'envoi."); }
-        };
-
-        // ADS LOGIC
         const loadContent = () => {
             onSnapshot(collection(db, 'ads'), (snap) => {
                 adsData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 adsData.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
                 renderAds(adsData);
-            });
+            }, (err) => console.error(err));
         };
 
         const renderAds = (list) => {
             const grid = document.getElementById('ads-grid');
-            grid.innerHTML = list.length ? "" : '<div class="col-span-full py-20 text-center"><p class="text-slate-400 font-bold">Aucune annonce pour le moment.</p></div>';
+            grid.innerHTML = list.length ? "" : '<div class="col-span-full py-20 text-center"><p class="text-slate-400 font-bold uppercase text-xs">Aucune annonce.</p></div>';
             list.forEach(ad => {
                 grid.innerHTML += `
-                    <div onclick="openViewModal('${ad.id}')" class="bg-white rounded-3xl overflow-hidden ad-card border border-slate-100 shadow-sm cursor-pointer flex flex-col">
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="${ad.image}" class="w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur px-2 py-1 rounded-lg text-[8px] font-black uppercase text-emerald-600">${ad.category}</div>
+                    <div onclick="openViewModal('${ad.id}')" class="bg-white rounded-[2.5rem] overflow-hidden ad-card cursor-pointer flex flex-col p-2">
+                        <div class="h-56 overflow-hidden relative rounded-[2rem]">
+                            <img src="${ad.image}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400x300?text=Kongo+Market'">
+                            <div class="absolute bottom-4 left-4 glass px-3 py-1.5 rounded-xl text-[9px] font-black uppercase text-slate-800 shadow-sm">${ad.category.split(' ')[0]}</div>
                         </div>
                         <div class="p-5 flex-1 flex flex-col">
-                            <h4 class="font-bold text-slate-900 text-sm truncate mb-1">${ad.title}</h4>
-                            <p class="text-emerald-600 font-black text-sm">${new Intl.NumberFormat().format(ad.price)} FCFA</p>
-                            <div class="mt-auto pt-4 flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase">
-                                <span><i class="fas fa-map-marker-alt text-emerald-500 mr-1"></i> ${ad.country}</span>
-                                <i class="fab fa-whatsapp text-emerald-500 text-lg"></i>
+                            <h4 class="font-extrabold text-slate-900 text-[15px] truncate mb-1 tracking-tight">${ad.title}</h4>
+                            <p class="text-emerald-600 font-black text-lg tracking-tighter">${new Intl.NumberFormat().format(ad.price)} <span class="text-[10px]">FCFA</span></p>
+                            <div class="mt-4 flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                <span><i class="fas fa-map-marker-alt text-emerald-500 mr-1.5"></i> ${ad.country.split(' ')[0]}</span>
+                                <div class="w-7 h-7 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center"><i class="fab fa-whatsapp"></i></div>
                             </div>
                         </div>
                     </div>`;
@@ -357,79 +434,75 @@
         };
 
         window.filterAds = () => {
-            const term = document.getElementById('search-input').value.toLowerCase();
             const country = document.getElementById('country-selector').value;
             const category = document.getElementById('category-filter').value;
-            
-            const filtered = adsData.filter(ad => {
-                return (ad.title.toLowerCase().includes(term)) &&
-                       (country === "" || ad.country === country) &&
-                       (category === "" || ad.category === category);
-            });
+            const filtered = adsData.filter(ad => (country === "" || ad.country === country) && (category === "" || ad.category === category));
             renderAds(filtered);
         };
 
         window.processAdImage = (input) => {
             const f = input.files[0];
-            if(f && f.size < 2000000) {
+            if(f) {
                 const r = new FileReader();
-                r.onload = (e) => {
-                    base64Photo = e.target.result;
-                    document.getElementById('img-preview-src').src = base64Photo;
-                    document.getElementById('preview-box').classList.remove('hidden');
+                r.onload = (e) => { 
+                    base64Photo = e.target.result; 
+                    document.getElementById('img-preview-src').src = base64Photo; 
+                    document.getElementById('preview-box').classList.remove('hidden'); 
                 };
                 r.readAsDataURL(f);
-            } else { alert("Image trop volumineuse (Max 2Mo)"); }
+            }
         };
 
         window.submitNewAd = async () => {
-            const title = document.getElementById('ad-title').value;
+            const title = document.getElementById('ad-title').value.trim();
             const price = document.getElementById('ad-price').value;
             const country = document.getElementById('ad-country').value;
             const category = document.getElementById('ad-category').value;
-            const whatsapp = document.getElementById('ad-whatsapp').value;
-            const prefix = document.getElementById('ad-wa-prefix').value;
-            const desc = document.getElementById('ad-desc').value;
+            const whatsapp = document.getElementById('ad-whatsapp').value.trim();
+            const desc = document.getElementById('ad-desc').value.trim();
 
-            if(!title || !price || !base64Photo || !whatsapp) return alert("Remplissez les infos obligatoires.");
-
+            if(!title || !price || !base64Photo || !whatsapp || !country || !category) return alert("Champs manquants !");
+            
             const btn = document.getElementById('btn-publish-final');
-            btn.disabled = true; btn.textContent = "Envoi...";
+            btn.disabled = true; btn.textContent = "Publication...";
 
             try {
+                let cleanWA = whatsapp.replace(/\D/g,'');
                 await addDoc(collection(db, 'ads'), {
-                    title, price: Number(price), country, category, 
-                    description: desc, image: base64Photo, 
-                    whatsapp: `${prefix}${whatsapp.replace(/\D/g,'')}`,
-                    userId: user.uid, userName: user.displayName,
-                    createdAt: serverTimestamp()
+                    title, price: Number(price), country, category, description: desc, image: base64Photo, 
+                    whatsapp: cleanWA, userId: user.uid, userName: user.displayName, createdAt: serverTimestamp()
                 });
                 closeAddModal();
-            } catch (e) { alert("Erreur Firestore."); }
-            finally { btn.disabled = false; btn.textContent = "Publier maintenant"; }
+                base64Photo = "";
+                document.getElementById('preview-box').classList.add('hidden');
+            } catch (e) { alert("Erreur."); } finally { btn.disabled = false; btn.textContent = "Publier maintenant"; }
         };
 
         window.openViewModal = (id) => {
             const ad = adsData.find(a => a.id === id);
+            if(!ad) return;
             document.getElementById('view-img').src = ad.image;
             document.getElementById('view-title').textContent = ad.title;
             document.getElementById('view-price').textContent = new Intl.NumberFormat().format(ad.price) + " FCFA";
-            document.getElementById('view-desc').textContent = ad.description;
+            document.getElementById('view-desc').textContent = ad.description || "Aucune description fournie.";
             document.getElementById('view-cat').textContent = ad.category;
             document.getElementById('view-loc').textContent = ad.country;
-            document.getElementById('view-seller').textContent = ad.userName;
+            document.getElementById('view-seller').textContent = ad.userName || "Vendeur Certifié";
+            document.getElementById('view-seller-initial').textContent = (ad.userName || "V")[0].toUpperCase();
             document.getElementById('btn-wa-link').href = `https://wa.me/${ad.whatsapp}`;
             document.getElementById('modal-view').classList.remove('hidden');
         };
 
-        // UI HELPERS
-        window.openAuthModal = () => document.getElementById('modal-auth').classList.remove('hidden');
+        window.openAuthModal = (mode = 'login') => {
+            switchAuthTab(mode);
+            document.getElementById('modal-auth').classList.remove('hidden');
+        };
         window.closeAuthModal = () => document.getElementById('modal-auth').classList.add('hidden');
         window.openAddModal = () => document.getElementById('modal-add').classList.remove('hidden');
         window.closeAddModal = () => document.getElementById('modal-add').classList.add('hidden');
         window.closeViewModal = () => document.getElementById('modal-view').classList.add('hidden');
         window.handleSignOut = () => signOut(auth);
-        window.checkAuthAndOpenAdd = () => user ? openAddModal() : openAuthModal();
+        window.checkAuthAndOpenAdd = () => user ? openAddModal() : openAuthModal('signup');
 
         start();
     </script>
